@@ -14,7 +14,6 @@
         <module>mall-admin</module>
         <!--TODO  搜索引擎本期项目 用不到 暂时关闭-->
         <!--<module>mall-search</module>-->
-        <!--<module>mall-portal</module>-->
         <!--TODO  demo本期项目 用不到 暂时关闭-->
         <!--<module>mall-demo</module>-->
     </modules>
