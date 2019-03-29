@@ -20,6 +20,8 @@ package com.macro.mall.admin.mapper;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.macro.mall.admin.model.SysUser;
 import com.macro.mall.admin.vo.UserVO;
+import com.macro.mall.common.model.Query;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -40,6 +42,14 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      */
     UserVO selectUserVoByUsername(String username);
 
+    /**
+     * 分页查询用户信息（含角色）
+     *
+     * @param query     查询条件
+     * @param username  用户名
+     * @return list
+     */
+    List selectUserVoPageDataScope(Query query, @Param("username") Object username);
 
     /**
      * 通过手机号查询用户信息（含有角色信息）
