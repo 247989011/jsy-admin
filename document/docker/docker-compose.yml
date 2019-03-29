@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mall-admin:
+    image: mall/mall-admin:0.0.1-SNAPSHOT
+    container_name: mall-admin
+    ports:
+      - 8080:8080
+    volumes:
+      - "/home/mall/logs:/var/logs"
+  mall-portal:
+    image: mall/mall-portal:0.0.1-SNAPSHOT
+    container_name: mall-portal
+    ports:
+      - 8085:8085
+      - 8443:8443
+    volumes:
+      - "/home/mall/logs:/var/logs"

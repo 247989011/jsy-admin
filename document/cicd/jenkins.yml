@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+
+  malljenkins:
+    image: jenkins/jenkins:2.150
+    container_name: malljenkins
+    restart: always
+    volumes:
+     - "/home/jenkins:/var/jenkins_home"
+     #执行宿主主机docker命令配置
+     - "/usr/bin/docker:/bin/docker"
+     #执行宿主主机docker命令配置
+     - "/var/run/docker.sock:/var/run/docker.sock"
+     #执行宿主主机docker命令配置
+     - "/usr/lib64/libltdl.so.7:/usr/lib/x86_64-linux-gnu/libltdl.so.7"
+    ports:
+      - 9080:8080
+      - 9050:50000

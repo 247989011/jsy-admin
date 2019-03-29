@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.mall.mapper.FdfsFilenameMapperMapper">
+  <resultMap id="BaseResultMap" type="com.macro.mall.model.FdfsFilenameMapper">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="fdfs_group" jdbcType="VARCHAR" property="fdfsGroup" />
+    <result column="fdfs_full_path_name" jdbcType="VARCHAR" property="fdfsFullPathName" />
+    <result column="origin_file_name" jdbcType="VARCHAR" property="originFileName" />
+    <result column="last_create_time" jdbcType="TIMESTAMP" property="lastCreateTime" />
+    <result column="last_create_id" jdbcType="VARCHAR" property="lastCreateId" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="last_update_id" jdbcType="VARCHAR" property="lastUpdateId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, fdfs_group, fdfs_full_path_name, origin_file_name, last_create_time, last_create_id, 
+    last_update_time, last_update_id
+  </sql>
+  <select id="selectByExample" parameterType="com.macro.mall.model.FdfsFilenameMapperExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from fdfs_filename_mapper
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fdfs_filename_mapper
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from fdfs_filename_mapper
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.macro.mall.model.FdfsFilenameMapperExample">
+    delete from fdfs_filename_mapper
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.macro.mall.model.FdfsFilenameMapper">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fdfs_filename_mapper (fdfs_group, fdfs_full_path_name, origin_file_name, 
+      last_create_time, last_create_id, last_update_time, 
+      last_update_id)
+    values (#{fdfsGroup,jdbcType=VARCHAR}, #{fdfsFullPathName,jdbcType=VARCHAR}, #{originFileName,jdbcType=VARCHAR}, 
+      #{lastCreateTime,jdbcType=TIMESTAMP}, #{lastCreateId,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.macro.mall.model.FdfsFilenameMapper">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fdfs_filename_mapper
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fdfsGroup != null">
+        fdfs_group,
+      </if>
+      <if test="fdfsFullPathName != null">
+        fdfs_full_path_name,
+      </if>
+      <if test="originFileName != null">
+        origin_file_name,
+      </if>
+      <if test="lastCreateTime != null">
+        last_create_time,
+      </if>
+      <if test="lastCreateId != null">
+        last_create_id,
+      </if>
+      <if test="lastUpdateTime != null">
+        last_update_time,
+      </if>
+      <if test="lastUpdateId != null">
+        last_update_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fdfsGroup != null">
+        #{fdfsGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="fdfsFullPathName != null">
+        #{fdfsFullPathName,jdbcType=VARCHAR},
+      </if>
+      <if test="originFileName != null">
+        #{originFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastCreateTime != null">
+        #{lastCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastCreateId != null">
+        #{lastCreateId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null">
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateId != null">
+        #{lastUpdateId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.macro.mall.model.FdfsFilenameMapperExample" resultType="java.lang.Integer">
+    select count(*) from fdfs_filename_mapper
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update fdfs_filename_mapper
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.fdfsGroup != null">
+        fdfs_group = #{record.fdfsGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fdfsFullPathName != null">
+        fdfs_full_path_name = #{record.fdfsFullPathName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.originFileName != null">
+        origin_file_name = #{record.originFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastCreateTime != null">
+        last_create_time = #{record.lastCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastCreateId != null">
+        last_create_id = #{record.lastCreateId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastUpdateTime != null">
+        last_update_time = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastUpdateId != null">
+        last_update_id = #{record.lastUpdateId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update fdfs_filename_mapper
+    set id = #{record.id,jdbcType=BIGINT},
+      fdfs_group = #{record.fdfsGroup,jdbcType=VARCHAR},
+      fdfs_full_path_name = #{record.fdfsFullPathName,jdbcType=VARCHAR},
+      origin_file_name = #{record.originFileName,jdbcType=VARCHAR},
+      last_create_time = #{record.lastCreateTime,jdbcType=TIMESTAMP},
+      last_create_id = #{record.lastCreateId,jdbcType=VARCHAR},
+      last_update_time = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
+      last_update_id = #{record.lastUpdateId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.macro.mall.model.FdfsFilenameMapper">
+    update fdfs_filename_mapper
+    <set>
+      <if test="fdfsGroup != null">
+        fdfs_group = #{fdfsGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="fdfsFullPathName != null">
+        fdfs_full_path_name = #{fdfsFullPathName,jdbcType=VARCHAR},
+      </if>
+      <if test="originFileName != null">
+        origin_file_name = #{originFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastCreateTime != null">
+        last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastCreateId != null">
+        last_create_id = #{lastCreateId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null">
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateId != null">
+        last_update_id = #{lastUpdateId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.macro.mall.model.FdfsFilenameMapper">
+    update fdfs_filename_mapper
+    set fdfs_group = #{fdfsGroup,jdbcType=VARCHAR},
+      fdfs_full_path_name = #{fdfsFullPathName,jdbcType=VARCHAR},
+      origin_file_name = #{originFileName,jdbcType=VARCHAR},
+      last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+      last_create_id = #{lastCreateId,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      last_update_id = #{lastUpdateId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

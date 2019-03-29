@@ -1,0 +1,13 @@
+version: '3.1'
+
+services:
+
+ mallportainer:
+    image: portainer/portainer
+    container_name: mallportainer
+    restart: always
+    volumes:
+     - "/home/portainer:/data"
+     - "/var/run/docker.sock:/var/run/docker.sock"
+    ports:
+     - 9000:9000

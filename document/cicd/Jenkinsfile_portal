@@ -1,0 +1,112 @@
+pipeline{
+   agent any
+   environment {
+		PRJ_HOME_LINUX = '/home/jenkins/workspace/mall_portal/'
+		PRJ_HOME_MAVEN_DOCKER = '/usr/src/mymaven'
+		
+		MAVEN_DEPEND_HOME_LINUX = '/root/.m2'
+		MAVEN_DEPEND_HOME_MAVEN_DOCKER = '/root/.m2'
+		
+		PRJ_DOCKER_HOME_LINUX = '/home/jenkins/workspace/mall_portal/document/docker/'
+		PRJ_DOCKER_COMPOSE_FILENAME_LINUX = 'docker-compose_portal.yml'
+		
+		PRJ_DOCKERFILE_HOME_LINUX = '/home/jenkins/workspace/mall_portal/document/dockerfile/portal/'
+		
+		PRJ_APP_FULLPATH_NAME = '/home/jenkins/workspace/mall_portal/mall-portal/target/mall-portal-0.0.1-SNAPSHOT.jar'
+		PRJ_CONTAINER_NAME = 'mall_portal'
+		PRJ_CONTAINER_IMAGE_NAME = 'mall_portal'
+	    
+    }
+
+	stages {
+	
+			stage('Stop  Docker APP ') { 
+				steps {
+					echo "Stop  Docker APP ..."
+					 script {
+                		def remote = [:]
+						remote.name = 'test'
+						remote.host = '39.108.100.113'
+						remote.user = 'root'
+						remote.password = 'Wxf840204'
+						remote.allowAnyHosts = true
+						sshCommand  remote:remote, command: " docker stop  ${PRJ_CONTAINER_IMAGE_NAME} "
+                    }
+
+					echo "Stop  Docker APP finsh."
+				}
+			}
+			
+			stage('Build') { 
+				steps {
+					echo " Build ..."
+					
+					script {
+                		def remote = [:]
+						remote.name = 'test'
+						remote.host = '39.108.100.113'
+						remote.user = 'root'
+						remote.password = 'Wxf840204'
+						remote.allowAnyHosts = true
+						sshCommand  remote:remote, command: "docker run  --rm -v ${MAVEN_DEPEND_HOME_LINUX}:${MAVEN_DEPEND_HOME_MAVEN_DOCKER} -v ${PRJ_HOME_LINUX}:${PRJ_HOME_MAVEN_DOCKER}  -w ${PRJ_HOME_MAVEN_DOCKER} maven:3.3-jdk-8 \
+						mvn clean  package "
+                    }
+										
+					echo "Build finsh."
+				}
+			}
+			
+						
+			stage('Build Docker image') { 
+				steps {
+					echo " Deploy  Docker image ..."
+					 script {
+                		def remote = [:]
+						remote.name = 'test'
+						remote.host = '39.108.100.113'
+						remote.user = 'root'
+						remote.password = 'Wxf840204'
+						remote.allowAnyHosts = true
+						sshCommand  remote:remote, command: "cd ${PRJ_DOCKERFILE_HOME_LINUX} && /bin/cp -rf ${PRJ_APP_FULLPATH_NAME} ${PRJ_DOCKERFILE_HOME_LINUX}  && docker build  -t  ${PRJ_CONTAINER_IMAGE_NAME}:${BUILD_NUMBER} . "
+                    }
+
+					echo "Build  Docker image finsh."
+				}
+			}
+			
+			
+			stage('Deploy  Docker image') { 
+				steps {
+					echo " Deploy  Docker image ..."
+					 script {
+                		def remote = [:]
+						remote.name = 'test'
+						remote.host = '39.108.100.113'
+						remote.user = 'root'
+						remote.password = 'Wxf840204'
+						remote.allowAnyHosts = true
+						sshCommand  remote:remote, command: "cd ${PRJ_DOCKER_HOME_LINUX} &&  docker rm -f ${PRJ_CONTAINER_NAME} ; export BUILD_NUMBER_ENV=${BUILD_NUMBER}  && docker-compose -f ${PRJ_DOCKER_COMPOSE_FILENAME_LINUX} up -d "
+                    }
+
+					echo "Deploy  Docker image finsh."
+				}
+			}
+			
+			stage('Keep the last three images') { 
+				steps {
+					echo " Keep the last three images ..."
+					sh '''OLD_BUILD_NUMBER=0; 
+						OLD_BUILD_NUMBER=`expr ${BUILD_NUMBER} - 3`;   
+						for verno in `docker images |grep mall_portal | awk '{print $2}'` 
+						do 
+							if [ $verno -lt $OLD_BUILD_NUMBER ] 
+							then 
+								docker rmi -f  mall_portal:$verno 
+							fi 
+						done'''
+					echo "Keep the last three images."
+				}
+			}
+					
+		}
+}

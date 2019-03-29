@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.mall.dao.UmsMemberTagsRelationDao">
+    <!--批量新增回写主键支持-->
+    <insert id="insertList">
+        INSERT INTO ums_member_tags (member_id, tags_id) VALUES
+        <foreach collection="list" separator="," item="item" index="index">
+            (#{item.memberId,jdbcType=BIGINT},
+            #{item.tagsId,jdbcType=BIGINT})
+        </foreach>
+    </insert>
+    <select id="getTagsList" resultMap="com.macro.mall.mapper.UmsTagsMapper.BaseResultMap">
+        select r.*
+        from ums_member_tags ar left join ums_tags r on ar.tags_id = r.id
+        where ar.member_id = #{memberId}
+    </select>
+
+
+</mapper>

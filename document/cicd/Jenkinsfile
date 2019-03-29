@@ -1,0 +1,45 @@
+pipeline{
+   agent any
+   environment {
+		PRJ_HOME_LINUX = '/home/jenkins/workspace/mall_admin/'
+		PRJ_HOME_MAVEN_DOCKER = '/usr/src/mymaven'
+		
+		MAVEN_DEPEND_HOME_LINUX = '/root/.m2'
+		MAVEN_DEPEND_HOME_MAVEN_DOCKER = '/root/.m2'
+		
+		PRJ_CICD_HOME_JENKINS_DOCKER = '/home/jenkins/workspace/mall_admin/document/docker/'
+		DOCKER_COMPOSE_HOME = '/root/mall/'
+    }
+
+	stages {
+			
+			stage('Build') { 
+				steps {
+					echo " Build ..."
+					
+					sh "docker run  --rm -v ${MAVEN_DEPEND_HOME_LINUX}:${MAVEN_DEPEND_HOME_MAVEN_DOCKER} -v ${PRJ_HOME_LINUX}:${PRJ_HOME_MAVEN_DOCKER}  -w ${PRJ_HOME_MAVEN_DOCKER} maven:3.3-jdk-8 \
+						mvn clean  package "
+					
+					echo "Build finsh."
+				}
+			}
+			
+			stage('Deploy  Docker image') { 
+				steps {
+					echo " Deploy  Docker image ..."
+					 script {
+                		def remote = [:]
+						remote.name = 'test'
+						remote.host = '39.108.100.113'
+						remote.user = 'root'
+						remote.password = 'Jsy123456'
+						remote.allowAnyHosts = true
+						sshCommand  remote:remote, command: "cd ${PRJ_CICD_HOME_JENKINS_DOCKER} &&  docker-compose -f docker-compose.yml down && docker-compose -f docker-compose.yml up -d "
+                    }
+
+					echo "Deploy  Docker image finsh."
+				}
+			}
+			
+		}
+}

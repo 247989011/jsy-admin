@@ -1,0 +1,43 @@
+version: '3.1'
+services:
+  fastdfs_storage0: 
+    image: luhuiguo/fastdfs
+    container_name: storage0
+    environment:   
+     - TRACKER_SERVER=39.108.100.113:22122
+    restart: always
+    volumes: 
+     - "/home/fdfs/storage0:/var/fdfs"
+    ports:
+     - "23000:23000"
+    command: 
+     storage
+    depends_on:
+     - fastdfs_tracker
+    networks:
+     extnetwork:
+      ipv4_address: 172.168.5.4
+  
+
+  fastdfs_tracker:
+    image: luhuiguo/fastdfs
+    container_name: tracker
+    restart: always
+    volumes:
+      - "/home/fdfs/tracker:/var/fdfs"
+    ports:
+      - "22122:22122"
+      - "8082:8080"
+    command:
+      tracker
+    networks:
+     extnetwork:
+      ipv4_address: 172.168.5.5
+
+networks:
+   extnetwork:
+     driver: bridge
+     ipam:
+       config:
+         - subnet: 172.168.5.0/24
+

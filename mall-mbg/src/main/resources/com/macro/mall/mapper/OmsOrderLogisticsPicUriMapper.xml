@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.mall.mapper.OmsOrderLogisticsPicUriMapper">
+  <resultMap id="BaseResultMap" type="com.macro.mall.model.OmsOrderLogisticsPicUri">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="trace_no" jdbcType="VARCHAR" property="traceNo" />
+    <result column="logistics_pic_uri" jdbcType="VARCHAR" property="logisticsPicUri" />
+    <result column="last_create_time" jdbcType="TIMESTAMP" property="lastCreateTime" />
+    <result column="last_create_id" jdbcType="VARCHAR" property="lastCreateId" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="last_update_id" jdbcType="VARCHAR" property="lastUpdateId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, trace_no, logistics_pic_uri, last_create_time, last_create_id, last_update_time, 
+    last_update_id
+  </sql>
+  <select id="selectByExample" parameterType="com.macro.mall.model.OmsOrderLogisticsPicUriExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from oms_order_logistics_pic_uri
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from oms_order_logistics_pic_uri
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from oms_order_logistics_pic_uri
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.macro.mall.model.OmsOrderLogisticsPicUriExample">
+    delete from oms_order_logistics_pic_uri
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.macro.mall.model.OmsOrderLogisticsPicUri">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into oms_order_logistics_pic_uri (trace_no, logistics_pic_uri, last_create_time, 
+      last_create_id, last_update_time, last_update_id
+      )
+    values (#{traceNo,jdbcType=VARCHAR}, #{logisticsPicUri,jdbcType=VARCHAR}, #{lastCreateTime,jdbcType=TIMESTAMP}, 
+      #{lastCreateId,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{lastUpdateId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.macro.mall.model.OmsOrderLogisticsPicUri">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into oms_order_logistics_pic_uri
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="traceNo != null">
+        trace_no,
+      </if>
+      <if test="logisticsPicUri != null">
+        logistics_pic_uri,
+      </if>
+      <if test="lastCreateTime != null">
+        last_create_time,
+      </if>
+      <if test="lastCreateId != null">
+        last_create_id,
+      </if>
+      <if test="lastUpdateTime != null">
+        last_update_time,
+      </if>
+      <if test="lastUpdateId != null">
+        last_update_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="traceNo != null">
+        #{traceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticsPicUri != null">
+        #{logisticsPicUri,jdbcType=VARCHAR},
+      </if>
+      <if test="lastCreateTime != null">
+        #{lastCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastCreateId != null">
+        #{lastCreateId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null">
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateId != null">
+        #{lastUpdateId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.macro.mall.model.OmsOrderLogisticsPicUriExample" resultType="java.lang.Integer">
+    select count(*) from oms_order_logistics_pic_uri
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update oms_order_logistics_pic_uri
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.traceNo != null">
+        trace_no = #{record.traceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logisticsPicUri != null">
+        logistics_pic_uri = #{record.logisticsPicUri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastCreateTime != null">
+        last_create_time = #{record.lastCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastCreateId != null">
+        last_create_id = #{record.lastCreateId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastUpdateTime != null">
+        last_update_time = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastUpdateId != null">
+        last_update_id = #{record.lastUpdateId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update oms_order_logistics_pic_uri
+    set id = #{record.id,jdbcType=BIGINT},
+      trace_no = #{record.traceNo,jdbcType=VARCHAR},
+      logistics_pic_uri = #{record.logisticsPicUri,jdbcType=VARCHAR},
+      last_create_time = #{record.lastCreateTime,jdbcType=TIMESTAMP},
+      last_create_id = #{record.lastCreateId,jdbcType=VARCHAR},
+      last_update_time = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
+      last_update_id = #{record.lastUpdateId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.macro.mall.model.OmsOrderLogisticsPicUri">
+    update oms_order_logistics_pic_uri
+    <set>
+      <if test="traceNo != null">
+        trace_no = #{traceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticsPicUri != null">
+        logistics_pic_uri = #{logisticsPicUri,jdbcType=VARCHAR},
+      </if>
+      <if test="lastCreateTime != null">
+        last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastCreateId != null">
+        last_create_id = #{lastCreateId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null">
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateId != null">
+        last_update_id = #{lastUpdateId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.macro.mall.model.OmsOrderLogisticsPicUri">
+    update oms_order_logistics_pic_uri
+    set trace_no = #{traceNo,jdbcType=VARCHAR},
+      logistics_pic_uri = #{logisticsPicUri,jdbcType=VARCHAR},
+      last_create_time = #{lastCreateTime,jdbcType=TIMESTAMP},
+      last_create_id = #{lastCreateId,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      last_update_id = #{lastUpdateId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

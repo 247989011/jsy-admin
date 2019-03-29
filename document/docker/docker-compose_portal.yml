@@ -1,0 +1,10 @@
+version: '3'
+services:
+    mall-portal:
+      image: mall_portal:${BUILD_NUMBER_ENV}
+      container_name: mall_portal
+      ports:
+        - 8085:8085
+        - 8443:8443
+      volumes:
+        - "/home/mall/logs:/var/logs"

@@ -1,0 +1,59 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mall_mysql
+    command: --default-authentication-plugin=mysql_native_password --lower_case_table_names=1
+    ports:
+      - 3366:3306
+    volumes:
+      - /home/mysql/data:/var/lib/mysql
+      - /home/mysql/conf:/etc/mysql
+      - /home/mysql/log:/var/log/mysql
+    environment: 
+      MYSQL_ROOT_PASSWORD: root
+  elasticsearch:
+    image: elasticsearch:2.4
+    container_name: mall_elasticsearch
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - /home/elasticsearch/plugins:/usr/share/elasticsearch/plugins
+      - /home/elasticsearch/data:/usr/share/elasticsearch/data
+  redis:
+    image: redis:3.2
+    container_name: mall_redis
+    ports:
+      - 6379:6379
+    volumes:
+      - /home/redis/data:/data
+    command: redis-server --appendonly yes
+  mongo:
+    image: mongo:3.2
+    container_name: mall_mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - /home/mongo/db:/data/db
+  nginx:
+    image: nginx
+    container_name: mall_nginx
+    ports:
+      - 80:80
+    volumes:
+      - /home/nginx/html:/usr/share/nginx/html
+      - /home/nginx/logs:/var/log/nginx
+      - /home/nginx/conf/conf.d:/etc/nginx/conf.d
+  rabbitmq:
+    image: rabbitmq:3.7-management
+    container_name: mall_rabbitmq
+    restart: always
+    volumes:
+     - "/home/rabbitmq:/var/lib/rabbitmq"
+    ports:
+     - 4369:4369
+     - 5671:5671
+     - 5672:5672
+     - 25672:25672
+     - 9080:15672

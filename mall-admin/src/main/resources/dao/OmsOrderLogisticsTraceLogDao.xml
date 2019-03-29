@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.mall.dao.OmsOrderLogisticsTraceLogDao">
+    <select id="getLastOrderTraceLog" resultMap="com.macro.mall.mapper.OmsOrderLogisticsTraceLogMapper.BaseResultMap">
+        SELECT *
+        FROM
+        oms_order_logistics_trace_log
+        WHERE
+        <if test="orderId!=null and orderId!=''">
+            AND order_id = #{order_id}
+        </if>
+        limit 1
+    </select>
+</mapper>

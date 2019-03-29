@@ -1,0 +1,9 @@
+version: '3'
+services:
+  mall-admin:
+    image: mall_admin:${BUILD_NUMBER_ENV}
+    container_name: mall_admin
+    ports:
+      - 8086:8086
+    volumes:
+      - "/home/mall/logs:/var/logs"
