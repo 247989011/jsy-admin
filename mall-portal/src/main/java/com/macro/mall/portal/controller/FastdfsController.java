@@ -2,7 +2,7 @@ package com.macro.mall.portal.controller;
 
 import com.luhuiguo.fastdfs.domain.StorePath;
 import com.luhuiguo.fastdfs.service.FastFileStorageClient;
-import com.macro.mall.model.FdfsFilenameMapper;
+import com.macro.mall.common.model.FdfsFilenameMapper;
 import com.macro.mall.portal.domain.CommonResult;
 import com.macro.mall.portal.dto.FdfsFileDto;
 import com.macro.mall.portal.service.FdfsFileService;

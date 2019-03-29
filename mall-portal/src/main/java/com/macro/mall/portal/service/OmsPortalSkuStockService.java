@@ -1,7 +1,5 @@
 package com.macro.mall.portal.service;
 
-import com.macro.mall.model.OmsOrder;
-import com.macro.mall.model.PmsSkuStock;
 import com.macro.mall.portal.dto.OmsPortalSkuDto;
 import com.macro.mall.portal.vo.PmsPortalProductDetailVo;
 import org.springframework.transaction.annotation.Transactional;

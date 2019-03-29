@@ -1,6 +1,5 @@
 package com.macro.mall.portal.controller;
 
-import com.macro.mall.model.PaymsPayMode;
 import com.macro.mall.portal.domain.CommonResult;
 import com.macro.mall.portal.service.OmsPortalOrderService;
 import io.swagger.annotations.Api;

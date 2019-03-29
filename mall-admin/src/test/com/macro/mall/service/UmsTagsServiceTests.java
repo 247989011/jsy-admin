@@ -1,7 +1,5 @@
-package com.macro.mall.service;
+package com.macro.mall.common.service;
 
-import com.macro.mall.mapper.UmsTagsMapper;
-import com.macro.mall.model.UmsTags;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

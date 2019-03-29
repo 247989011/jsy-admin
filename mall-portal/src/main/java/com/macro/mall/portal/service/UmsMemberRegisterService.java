@@ -1,16 +1,7 @@
 package com.macro.mall.portal.service;
 
-import com.macro.mall.model.UmsMember;
 import com.macro.mall.portal.domain.CommonResult;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 会员管理Service

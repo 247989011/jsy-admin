@@ -1,6 +1,5 @@
 package com.macro.mall.portal.controller;
 
-import com.macro.mall.model.OmsOrderItem;
 import com.macro.mall.portal.constant.OmsOrderConst;
 import com.macro.mall.portal.domain.CommonResult;
 import com.macro.mall.portal.dto.OmsOrderCheckPhysicalPicDto;

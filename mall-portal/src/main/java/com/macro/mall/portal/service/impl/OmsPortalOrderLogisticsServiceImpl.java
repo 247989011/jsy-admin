@@ -1,11 +1,5 @@
 package com.macro.mall.portal.service.impl;
 
-import com.macro.mall.mapper.OmsOrderLogisticsPicUriMapper;
-import com.macro.mall.mapper.OmsOrderLogisticsTraceLogMapper;
-import com.macro.mall.mapper.OmsOrderMapper;
-import com.macro.mall.model.OmsOrder;
-import com.macro.mall.model.OmsOrderLogisticsPicUri;
-import com.macro.mall.model.OmsOrderLogisticsTraceLog;
 import com.macro.mall.portal.constant.AppOprRoleConst;
 import com.macro.mall.portal.constant.OmsOrderConst;
 import com.macro.mall.portal.dto.OmsOrderLogisticsPicDto;

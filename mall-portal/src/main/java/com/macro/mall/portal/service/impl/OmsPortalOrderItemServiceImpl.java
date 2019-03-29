@@ -1,22 +1,15 @@
 package com.macro.mall.portal.service.impl;
 
-import com.macro.mall.mapper.PmsProductMapper;
-import com.macro.mall.mapper.PmsSkuStockMapper;
-import com.macro.mall.model.PmsProduct;
-import com.macro.mall.model.SmsCoupon;
 import com.macro.mall.portal.dao.PortalProductDao;
 import com.macro.mall.portal.domain.PromotionProduct;
 import com.macro.mall.portal.service.OmsPortalOrderItemService;
 import com.macro.mall.portal.service.common.OmsPortalProductCommon;
 import com.macro.mall.portal.service.common.OmsPortalPromotionCommon;
-import com.macro.mall.portal.vo.PmsPortalProductDetailVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 订单的商品明细Service实现类

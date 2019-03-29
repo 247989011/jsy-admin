@@ -1,9 +1,5 @@
 package com.macro.mall.portal.dto;
 
-import com.macro.mall.model.OmsOrder;
-import com.macro.mall.model.OmsOrderItem;
-import com.macro.mall.model.PmsProduct;
-import com.macro.mall.model.PmsSkuStock;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -11,7 +7,6 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 商品模块-商品库存Dto

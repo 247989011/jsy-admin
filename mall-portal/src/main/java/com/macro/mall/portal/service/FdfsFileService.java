@@ -1,7 +1,7 @@
 package com.macro.mall.portal.service;
 
 import com.macro.mall.portal.dto.FdfsFileDto;
-import com.macro.mall.model.FdfsFilenameMapper;
+import com.macro.mall.common.model.FdfsFilenameMapper;
 
 /**
  * FdfsFileService

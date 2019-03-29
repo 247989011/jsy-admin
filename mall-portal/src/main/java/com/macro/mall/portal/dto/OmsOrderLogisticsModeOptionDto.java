@@ -1,7 +1,5 @@
 package com.macro.mall.portal.dto;
 
-import com.macro.mall.model.LmsLogisticsMode;
-import com.macro.mall.model.OmsLogisticsModeOption;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

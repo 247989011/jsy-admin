@@ -1,10 +1,6 @@
 package com.macro.mall.portal.service.impl;
 
-import com.macro.mall.mapper.OmsOfflinePayMtcnPicMapper;
-import com.macro.mall.mapper.OmsOrderMapper;
-import com.macro.mall.mapper.OmsOrderOperateHistoryMapper;
-import com.macro.mall.mapper.OmsOrderPayLogMapper;
-import com.macro.mall.model.*;
+import com.macro.mall.common.model.*;
 import com.macro.mall.portal.constant.AppOprRoleConst;
 import com.macro.mall.portal.constant.OmsOrderConst;
 import com.macro.mall.portal.dto.OmsOfflinePayMtcnPicDto;

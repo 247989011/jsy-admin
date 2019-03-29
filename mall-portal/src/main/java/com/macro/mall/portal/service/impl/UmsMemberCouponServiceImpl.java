@@ -1,8 +1,6 @@
 package com.macro.mall.portal.service.impl;
 
-import com.macro.mall.mapper.SmsCouponHistoryMapper;
-import com.macro.mall.mapper.SmsCouponMapper;
-import com.macro.mall.model.*;
+import com.macro.mall.common.model.*;
 import com.macro.mall.portal.dao.SmsCouponHistoryDao;
 import com.macro.mall.portal.domain.CartPromotionItem;
 import com.macro.mall.portal.domain.CommonResult;

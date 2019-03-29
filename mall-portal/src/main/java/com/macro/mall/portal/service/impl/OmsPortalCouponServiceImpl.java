@@ -1,10 +1,6 @@
 package com.macro.mall.portal.service.impl;
 
-import com.macro.mall.mapper.PmsProductMapper;
-import com.macro.mall.mapper.SmsCouponMapper;
-import com.macro.mall.mapper.SmsCouponProductCategoryRelationMapper;
-import com.macro.mall.mapper.SmsCouponProductRelationMapper;
-import com.macro.mall.model.*;
+import com.macro.mall.common.model.*;
 import com.macro.mall.portal.vo.SmsCouponVo;
 import com.macro.mall.portal.service.OmsPortalCouponService;
 import org.springframework.beans.BeanUtils;

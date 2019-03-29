@@ -1,7 +1,5 @@
 package com.macro.mall.portal.vo;
 
-import com.macro.mall.model.LmsLogisticsCharge;
-import com.macro.mall.model.LmsLogisticsMode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

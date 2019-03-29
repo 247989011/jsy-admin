@@ -1,7 +1,7 @@
 package com.macro.mall.portal.service.impl;
 
-import com.macro.mall.mapper.*;
-import com.macro.mall.model.*;
+import com.macro.mall.common.mapper.*;
+import com.macro.mall.common.model.*;
 import com.macro.mall.portal.domain.OmsPortalMarketingActivityDo;
 import com.macro.mall.portal.domain.OmsPortalMarketingActivityWithProductIdDo;
 import com.macro.mall.portal.service.OmsPortalMarketingActivityService;
@@ -73,10 +73,10 @@ public class OmsPortalMarketingActivityServiceImpl implements OmsPortalMarketing
                 new ArrayList<OmsPortalMarketingActivityWithProductIdDo>();
 
         //从商品ID获取参加的所有营销活动
-        SmsMarketingActivityProductRelationExample productRelationExample = 
+        SmsMarketingActivityProductRelationExample productRelationExample =
                 new SmsMarketingActivityProductRelationExample();
         productRelationExample.createCriteria().andProductIdEqualTo(productId);
-        List<SmsMarketingActivityProductRelation> productRelationList = 
+        List<SmsMarketingActivityProductRelation> productRelationList =
                 marketingActivityProductRelationMapper.selectByExample(productRelationExample);
         for (SmsMarketingActivityProductRelation e : productRelationList) {
             //定义

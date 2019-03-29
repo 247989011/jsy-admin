@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.macro.mall</groupId>
-    <artifactId>elephant-mall</artifactId>
+    <artifactId>jsy-admin</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -14,7 +14,7 @@
         <module>mall-admin</module>
         <!--TODO  搜索引擎本期项目 用不到 暂时关闭-->
         <!--<module>mall-search</module>-->
-        <module>mall-portal</module>
+        <!--<module>mall-portal</module>-->
         <!--TODO  demo本期项目 用不到 暂时关闭-->
         <!--<module>mall-demo</module>-->
     </modules>

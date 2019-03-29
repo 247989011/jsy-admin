@@ -1,6 +1,5 @@
 package com.macro.mall.portal.controller;
 
-import com.macro.mall.model.OmsOrderItem;
 import com.macro.mall.portal.domain.CommonResult;
 import com.macro.mall.portal.domain.MemberDetails;
 import com.macro.mall.portal.domain.PromotionProduct;

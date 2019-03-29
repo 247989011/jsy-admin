@@ -1,7 +1,5 @@
 package com.macro.mall.portal.domain;
 
-import com.macro.mall.model.SmsMarketingActivities;
-import com.macro.mall.model.SmsMarketingActivityRule;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

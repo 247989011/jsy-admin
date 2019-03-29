@@ -1,7 +1,5 @@
 package com.macro.mall.portal.dao;
 
-import com.macro.mall.model.OmsOrder;
-import com.macro.mall.model.OmsOrderItem;
 import com.macro.mall.portal.domain.OmsOrderDetail;
 import com.macro.mall.portal.dto.OmsOrderQueryParamDto;
 import org.apache.ibatis.annotations.Param;

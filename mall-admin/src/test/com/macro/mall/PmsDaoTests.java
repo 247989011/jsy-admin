@@ -1,11 +1,7 @@
 package com.macro.mall;
 
 
-import com.macro.mall.dao.PmsMemberPriceDao;
-import com.macro.mall.dao.PmsProductDao;
-import com.macro.mall.dto.PmsProductResult;
-import com.macro.mall.model.PmsMemberPrice;
-import com.macro.mall.util.JsonUtil;
+import com.macro.mall.common.util.JsonUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

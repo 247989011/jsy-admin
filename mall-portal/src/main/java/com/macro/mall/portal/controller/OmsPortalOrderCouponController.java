@@ -1,6 +1,5 @@
 package com.macro.mall.portal.controller;
 
-import com.macro.mall.model.SmsCoupon;
 import com.macro.mall.portal.domain.CommonResult;
 import com.macro.mall.portal.vo.SmsCouponVo;
 import com.macro.mall.portal.service.OmsPortalCouponService;

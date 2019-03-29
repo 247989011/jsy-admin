@@ -1,6 +1,6 @@
 package com.macro.mall.portal.vo;
 
-import com.macro.mall.model.*;
+import com.macro.mall.common.model.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

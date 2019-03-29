@@ -1,6 +1,5 @@
 package com.macro.mall.portal.service;
 
-import com.macro.mall.model.SmsCoupon;
 import com.macro.mall.portal.vo.SmsCouponVo;
 
 import java.util.List;

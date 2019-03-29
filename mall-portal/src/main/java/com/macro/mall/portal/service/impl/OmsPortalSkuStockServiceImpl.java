@@ -1,8 +1,8 @@
 package com.macro.mall.portal.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.macro.mall.mapper.*;
-import com.macro.mall.model.*;
+import com.macro.mall.common.mapper.*;
+import com.macro.mall.common.model.*;
 import com.macro.mall.portal.dao.PmsSkuStockDao;
 import com.macro.mall.portal.dto.OmsPortalSkuDto;
 import com.macro.mall.portal.service.OmsPortalSkuStockService;
@@ -179,8 +179,8 @@ public class OmsPortalSkuStockServiceImpl implements OmsPortalSkuStockService {
         products.addAll(productList);
 
         List<PmsPortalProductDetailVo>  productDetailVoList = portalProductCommon.productDetail(products, memberId);
-        
-// TODO  提取公共部分       
+
+// TODO  提取公共部分
 //        for (PmsProduct e : products) {
 //            PmsSkuStockExample skuStockExample1 = new PmsSkuStockExample();
 //            skuStockExample1.createCriteria().andProductIdEqualTo(e.getId());

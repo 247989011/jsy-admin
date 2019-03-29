@@ -1,7 +1,5 @@
 package com.macro.mall.portal.controller;
 
-import com.macro.mall.model.OmsOrder;
-import com.macro.mall.model.PmsSkuStock;
 import com.macro.mall.portal.domain.CommonResult;
 import com.macro.mall.portal.domain.MemberDetails;
 import com.macro.mall.portal.vo.PmsPortalProductDetailVo;

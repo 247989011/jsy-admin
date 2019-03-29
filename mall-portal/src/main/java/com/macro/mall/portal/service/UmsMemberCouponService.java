@@ -1,6 +1,5 @@
 package com.macro.mall.portal.service;
 
-import com.macro.mall.model.SmsCouponHistory;
 import com.macro.mall.portal.domain.CartPromotionItem;
 import com.macro.mall.portal.domain.CommonResult;
 import com.macro.mall.portal.domain.SmsCouponHistoryDetail;

@@ -1,6 +1,5 @@
 package com.macro.mall.portal.dto;
 
-import com.macro.mall.model.SmsMarketingActivities;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

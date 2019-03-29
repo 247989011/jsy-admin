@@ -1,7 +1,7 @@
 package com.macro.mall.portal.service.impl;
 
-import com.macro.mall.mapper.*;
-import com.macro.mall.model.*;
+import com.macro.mall.common.mapper.*;
+import com.macro.mall.common.model.*;
 import com.macro.mall.portal.dao.PortalProductDao;
 import com.macro.mall.portal.domain.CartPromotionItem;
 import com.macro.mall.portal.domain.OmsPortalMarketingActivityDo;

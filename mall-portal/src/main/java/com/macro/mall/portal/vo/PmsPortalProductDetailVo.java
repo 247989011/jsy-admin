@@ -1,8 +1,5 @@
 package com.macro.mall.portal.vo;
 
-import com.macro.mall.model.OmsOrderItem;
-import com.macro.mall.model.PmsSkuStock;
-import com.macro.mall.model.SmsCoupon;
 import com.macro.mall.portal.domain.OmsPortalMarketingActivityDo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

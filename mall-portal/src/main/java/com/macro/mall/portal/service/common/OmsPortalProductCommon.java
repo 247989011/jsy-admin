@@ -1,9 +1,7 @@
 package com.macro.mall.portal.service.common;
 
 import com.google.common.collect.Lists;
-import com.macro.mall.mapper.PmsProductAttributeMapper;
-import com.macro.mall.mapper.PmsSkuStockMapper;
-import com.macro.mall.model.*;
+import com.macro.mall.common.model.*;
 import com.macro.mall.portal.domain.OmsPortalMarketingActivityDo;
 import com.macro.mall.portal.vo.PmsPortalProductDetailVo;
 import com.xiaoleilu.hutool.json.JSONArray;
@@ -24,12 +22,12 @@ public class OmsPortalProductCommon {
     private PmsProductAttributeMapper productAttributeMapper;
     @Autowired
     private  OmsPortalPromotionCommon promotionCommon;
-    
+
     //根据商品基本信息组装商品详情
     public List<PmsPortalProductDetailVo> productDetail(Set<PmsProduct> products, Long memberId) {
         //定义返回值变量
         List<PmsPortalProductDetailVo> portalProductDetailVoList = new ArrayList<PmsPortalProductDetailVo>();
-        
+
         for (PmsProduct e : products) {
             PmsSkuStockExample skuStockExample1 = new PmsSkuStockExample();
             skuStockExample1.createCriteria().andProductIdEqualTo(e.getId());

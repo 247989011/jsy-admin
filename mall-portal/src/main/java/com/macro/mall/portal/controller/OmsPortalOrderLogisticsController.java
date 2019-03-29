@@ -1,6 +1,5 @@
 package com.macro.mall.portal.controller;
 
-import com.macro.mall.model.OmsOrderLogisticsTraceLog;
 import com.macro.mall.portal.domain.CommonResult;
 import com.macro.mall.portal.dto.OmsOrderLogisticsPicDto;
 import com.macro.mall.portal.service.OmsPortalOrderLogisticsService;

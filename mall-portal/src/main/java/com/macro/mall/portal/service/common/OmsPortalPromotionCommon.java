@@ -1,7 +1,7 @@
 package com.macro.mall.portal.service.common;
 
-import com.macro.mall.mapper.*;
-import com.macro.mall.model.*;
+import com.macro.mall.common.mapper.*;
+import com.macro.mall.common.model.*;
 import com.macro.mall.portal.domain.OmsPortalMarketingActivityDo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
 package com.macro.mall.portal.service.impl;
 
 import com.macro.mall.portal.dto.FdfsFileDto;
-import com.macro.mall.mapper.FdfsFilenameMapperMapper;
-import com.macro.mall.model.FdfsFilenameMapper;
-import com.macro.mall.model.FdfsFilenameMapperExample;
+import com.macro.mall.common.mapper.FdfsFilenameMapperMapper;
+import com.macro.mall.common.model.FdfsFilenameMapper;
+import com.macro.mall.common.model.FdfsFilenameMapperExample;
 import com.macro.mall.portal.service.FdfsFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

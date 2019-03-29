@@ -1,6 +1,6 @@
 package com.macro.mall.portal.domain;
 
-import com.macro.mall.model.*;
+import com.macro.mall.common.model.*;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;

@@ -1,6 +1,5 @@
 package com.macro.mall.portal.service;
 
-import com.macro.mall.model.OmsOfflinePayMtcnPic;
 import com.macro.mall.portal.dto.OmsOfflinePayMtcnPicDto;
 import org.springframework.transaction.annotation.Transactional;
 

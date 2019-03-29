@@ -1,6 +1,6 @@
 package com.macro.mall.portal.service;
 
-import com.macro.mall.model.*;
+import com.macro.mall.common.model.*;
 import com.macro.mall.portal.domain.CommonResult;
 import com.macro.mall.portal.domain.ConfirmOrderResult;
 import com.macro.mall.portal.domain.OrderParam;
