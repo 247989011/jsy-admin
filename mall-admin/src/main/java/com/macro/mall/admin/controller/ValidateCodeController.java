@@ -20,8 +20,8 @@ package com.macro.mall.admin.controller;
 import com.google.code.kaptcha.Producer;
 import com.macro.mall.admin.service.SysUserService;
 import com.macro.mall.common.constant.SecurityConstants;
+import com.macro.mall.common.domain.CommonResult;
 import com.macro.mall.common.util.Assert;
-import com.macro.mall.common.util.R;
 import io.swagger.annotations.Api;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +81,7 @@ public class ValidateCodeController {
      */
     @ResponseBody
     @GetMapping(SecurityConstants.MOBILE_VALIDATE_CODE_URL_PREFIX + "/{mobile}")
-    public R<Boolean> createCode(@PathVariable String mobile) {
+    public CommonResult createCode(@PathVariable String mobile) {
         Assert.isBlank(mobile, "手机号不能为空");
         return userService.sendSmsCode(mobile);
     }

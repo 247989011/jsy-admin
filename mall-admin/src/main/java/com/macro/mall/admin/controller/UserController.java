@@ -1,6 +1,7 @@
 package com.macro.mall.admin.controller;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.extension.api.R;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.luhuiguo.fastdfs.domain.StorePath;
 import com.luhuiguo.fastdfs.service.FastFileStorageClient;
 import com.macro.mall.admin.dto.UmsAdminLoginParam;
@@ -14,14 +15,13 @@ import com.macro.mall.admin.vo.UserVO;
 import com.macro.mall.common.constant.CommonConstant;
 import com.macro.mall.common.controller.BaseController;
 import com.macro.mall.common.domain.CommonResult;
-import com.macro.mall.common.model.Query;
-import com.macro.mall.common.util.R;
 import com.xiaoleilu.hutool.io.FileUtil;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -103,6 +103,7 @@ public class UserController extends BaseController {
             message="状态200的data格式说明：data返回值为对象")})
     @GetMapping("/info")
     @ResponseBody
+    @PreAuthorize("hasAnyAuthority('info')")
     public CommonResult user(Principal principal) {
         String  username = principal.getName();
         UserInfo userInfo = userService.findUserInfo(username);
@@ -144,7 +145,7 @@ public class UserController extends BaseController {
     @DeleteMapping("/{id}")
     @ResponseBody
     public CommonResult userDel(@PathVariable Integer id) {
-        SysUser sysUser = userService.selectById(id);
+        SysUser sysUser = userService.getById(id);
         Boolean b = userService.deleteUserById(sysUser);
         if(b.booleanValue() == false){
             return new CommonResult().failed();
@@ -175,13 +176,13 @@ public class UserController extends BaseController {
         String md5Password = passwordEncoder.encode(sysUser.getPassword());
         log.debug("加密后的密码 = {}", md5Password);
         sysUser.setPassword(md5Password);
-        userService.insert(sysUser);
+        userService.save(sysUser);
 
         for (Integer roleId : userDto.getRole()) {
             SysUserRole userRole = new SysUserRole();
             userRole.setUserId(sysUser.getUserId());
             userRole.setRoleId(roleId);
-            userRoleService.insert(userRole);
+            userRoleService.save(userRole);
         }
 
 //        userDto.getRole().forEach(roleId -> {
@@ -264,8 +265,8 @@ public class UserController extends BaseController {
     /**
      * 分页查询用户
      *
-     * @param params 参数集
-     * @param principal 用户信息
+     * @param page 参数集
+     * @param userDTO 用户信息
      *
      * @return 用户集合
      */
@@ -274,11 +275,8 @@ public class UserController extends BaseController {
             message="状态200的data格式说明：data返回值为对象")})
     @RequestMapping("/userPage")
     @ResponseBody
-    public CommonResult userPage(@RequestParam Map<String, Object> params, Principal principal) {
-        String  username = principal.getName();
-        UserVO userVO = userService.findUserByUsername(username);
-        Page  page = userService.selectWithRolePage(new Query(params), userVO);
-        return  new CommonResult().success(page);
+    public CommonResult userPage(Page page, UserDTO userDTO) {
+        return  new CommonResult().success(userService.getUserWithRolePage(page, userDTO));
     }
 
 

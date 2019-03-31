@@ -17,23 +17,24 @@
 
 package com.macro.mall.admin.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.macro.mall.common.util.TreeUtil;
-import com.macro.mall.admin.mapper.SysDeptMapper;
-import com.macro.mall.admin.mapper.SysDeptRelationMapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.macro.mall.admin.dto.DeptTree;
+import com.macro.mall.admin.mapper.SysDeptMapper;
 import com.macro.mall.admin.model.SysDept;
 import com.macro.mall.admin.model.SysDeptRelation;
+import com.macro.mall.admin.service.SysDeptRelationService;
 import com.macro.mall.admin.service.SysDeptService;
-import com.macro.mall.common.constant.CommonConstant;
+import com.macro.mall.common.util.SecurityUtils;
+import com.macro.mall.common.util.TreeUtil;
+import com.xiaoleilu.hutool.collection.CollUtil;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -44,11 +45,9 @@ import java.util.List;
  * @since 2018-01-20
  */
 @Service
+@AllArgsConstructor
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements SysDeptService {
-    @Autowired
-    private SysDeptMapper sysDeptMapper;
-    @Autowired
-    private SysDeptRelationMapper sysDeptRelationMapper;
+    private final SysDeptRelationService sysDeptRelationService;
 
     /**
      * 添加信息部门
@@ -57,33 +56,15 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
      * @return
      */
     @Override
-    public Boolean insertDept(SysDept dept) {
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean saveDept(SysDept dept) {
         SysDept sysDept = new SysDept();
         BeanUtils.copyProperties(dept, sysDept);
-        this.insert(sysDept);
-        this.insertDeptRelation(sysDept);
+        this.save(sysDept);
+        sysDeptRelationService.saveDeptRelation(sysDept);
         return Boolean.TRUE;
     }
 
-    /**
-     * 维护部门关系
-     * @param sysDept 部门
-     */
-    private void insertDeptRelation(SysDept sysDept) {
-        //增加部门关系表
-        SysDeptRelation deptRelation = new SysDeptRelation();
-        deptRelation.setDescendant(sysDept.getParentId());
-        List<SysDeptRelation> deptRelationList = sysDeptRelationMapper.selectList(new EntityWrapper<>(deptRelation));
-        for (SysDeptRelation sysDeptRelation : deptRelationList) {
-            sysDeptRelation.setDescendant(sysDept.getDeptId());
-            sysDeptRelationMapper.insert(sysDeptRelation);
-        }
-        //自己也要维护到关系表中
-        SysDeptRelation own = new SysDeptRelation();
-        own.setDescendant(sysDept.getDeptId());
-        own.setAncestor(sysDept.getDeptId());
-        sysDeptRelationMapper.insert(own);
-    }
 
     /**
      * 删除部门
@@ -92,13 +73,22 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
      * @return 成功、失败
      */
     @Override
-    public Boolean deleteDeptById(Integer id) {
-        SysDept sysDept = new SysDept();
-        sysDept.setDeptId(id);
-        sysDept.setUpdateTime(new Date());
-        sysDept.setDelFlag(CommonConstant.STATUS_DEL);
-        this.deleteById(sysDept);
-        sysDeptRelationMapper.deleteAllDeptRealtion(id);
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean removeDeptById(Integer id) {
+        //级联删除部门
+        List<Integer> idList = sysDeptRelationService
+                .list(Wrappers.<SysDeptRelation>query().lambda()
+                        .eq(SysDeptRelation::getAncestor, id))
+                .stream()
+                .map(SysDeptRelation::getDescendant)
+                .collect(Collectors.toList());
+
+        if (CollUtil.isNotEmpty(idList)) {
+            this.removeByIds(idList);
+        }
+
+        //删除部门级联关系
+        sysDeptRelationService.removeDeptRelationById(id);
         return Boolean.TRUE;
     }
 
@@ -109,6 +99,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
      * @return 成功、失败
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean updateDeptById(SysDept sysDept) {
         //更新部门状态
         this.updateById(sysDept);
@@ -116,41 +107,54 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         SysDeptRelation relation = new SysDeptRelation();
         relation.setAncestor(sysDept.getParentId());
         relation.setDescendant(sysDept.getDeptId());
-        sysDeptRelationMapper.updateDeptRealtion(relation);
-        return null;
+        sysDeptRelationService.updateDeptRelation(relation);
+        return Boolean.TRUE;
     }
 
     /**
-     * 查询部门树
+     * 查询全部部门树
      *
-     * @param sysDeptEntityWrapper
      * @return 树
      */
     @Override
-    public List<DeptTree> selectListTree(EntityWrapper<SysDept> sysDeptEntityWrapper) {
-        return getDeptTree(this.selectList(sysDeptEntityWrapper), 0);
+    public List<DeptTree> listDeptTrees() {
+        return getDeptTree(this.list(Wrappers.emptyWrapper()));
+    }
+
+    /**
+     * 查询用户部门树
+     *
+     * @return
+     */
+    @Override
+    public List<DeptTree> listCurrentUserDeptTrees() {
+        Integer deptId = SecurityUtils.getUser().getDeptId();
+        List<Integer> descendantIdList = sysDeptRelationService
+                .list(Wrappers.<SysDeptRelation>query().lambda()
+                        .eq(SysDeptRelation::getAncestor, deptId))
+                .stream().map(SysDeptRelation::getDescendant)
+                .collect(Collectors.toList());
+
+        List<SysDept> deptList = baseMapper.selectBatchIds(descendantIdList);
+        return getDeptTree(deptList);
     }
 
     /**
      * 构建部门树
      *
      * @param depts 部门
-     * @param root  根节点
      * @return
      */
-    private List<DeptTree> getDeptTree(List<SysDept> depts, int root) {
-        List<DeptTree> trees = new ArrayList<>();
-        DeptTree node;
-        for (SysDept dept : depts) {
-            if (dept.getParentId().equals(dept.getDeptId())) {
-                continue;
-            }
-            node = new DeptTree();
-            node.setId(dept.getDeptId());
-            node.setParentId(dept.getParentId());
-            node.setName(dept.getName());
-            trees.add(node);
-        }
-        return TreeUtil.bulid(trees, root);
+    private List<DeptTree> getDeptTree(List<SysDept> depts) {
+        List<DeptTree> treeList = depts.stream()
+                .filter(dept -> !dept.getDeptId().equals(dept.getParentId()))
+                .map(dept -> {
+                    DeptTree node = new DeptTree();
+                    node.setId(dept.getDeptId());
+                    node.setParentId(dept.getParentId());
+                    node.setName(dept.getName());
+                    return node;
+                }).collect(Collectors.toList());
+        return TreeUtil.buildByLoop(treeList, 0);
     }
 }

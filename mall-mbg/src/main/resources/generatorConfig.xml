@@ -26,18 +26,19 @@
                         password="${jdbc.password}">
         </jdbcConnection>
         <!-- 实体包路径-->
-        <javaModelGenerator targetPackage="com.macro.mall.common.model" targetProject="mall-mbg\src\main\java"/>
+        <javaModelGenerator targetPackage="com.macro.mall.demo.model" targetProject="mall-mbg\src\main\java"/>
         <!--DAO路径-->
-        <sqlMapGenerator targetPackage="com.macro.mall.common.mapper" targetProject="mall-mbg\src\main\resources"/>
+        <sqlMapGenerator targetPackage="com.macro.mall.demo.mapper" targetProject="mall-mbg\src\main\resources"/>
         <!--xml路径-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.macro.mall.common.mapper"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.macro.mall.demo.mapper"
                              targetProject="mall-mbg\src\main\java"/>
         <!--生成全部表tableName设为%-->
         <!--<table tableName="%">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table> -->
-        <table tableName="oms_order_logistics_delivery_staff" domainObjectName="OmsOrderLogisticsDeliveryStaff">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        <table tableName="test_demo" domainObjectName="TestDemo">
+
+
         </table>
         <!--<table tableName="oms_order_logistics_pic_uri" domainObjectName="OmsOrderLogisticsPicUri">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

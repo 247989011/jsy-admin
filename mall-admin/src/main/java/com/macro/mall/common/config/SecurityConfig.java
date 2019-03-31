@@ -129,6 +129,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+    @Override
     @Bean
     public UserDetailsService userDetailsService() {
         //获取登录用户信息

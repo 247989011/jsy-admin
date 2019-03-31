@@ -17,7 +17,7 @@
 
 package com.macro.mall.admin.mapper;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.admin.model.SysDeptRelation;
 
 /**
@@ -34,12 +34,13 @@ public interface SysDeptRelationMapper extends BaseMapper<SysDeptRelation> {
      *
      * @param id 部门ID
      */
-    void deleteAllDeptRealtion(Integer id);
+    void deleteDeptRelationsById(Integer id);
 
     /**
      * 更改部分关系表数据
      *
      * @param deptRelation
      */
-    void updateDeptRealtion(SysDeptRelation deptRelation);
+    void updateDeptRelations(SysDeptRelation deptRelation);
+
 }

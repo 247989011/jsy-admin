@@ -17,10 +17,12 @@
 
 package com.macro.mall.admin.mapper;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.macro.mall.admin.dto.UserDTO;
 import com.macro.mall.admin.model.SysUser;
 import com.macro.mall.admin.vo.UserVO;
-import com.macro.mall.common.model.Query;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -45,11 +47,11 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     /**
      * 分页查询用户信息（含角色）
      *
-     * @param query     查询条件
-     * @param username  用户名
+     * @param page    分页
+     * @param userDTO 查询参数
      * @return list
      */
-    List selectUserVoPageDataScope(Query query, @Param("username") Object username);
+    IPage<List<UserVO>> getUserVosPage(Page page, @Param("query") UserDTO userDTO);
 
     /**
      * 通过手机号查询用户信息（含有角色信息）

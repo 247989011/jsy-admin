@@ -17,7 +17,7 @@
 
 package com.macro.mall.admin.service.impl;
 
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.macro.mall.admin.mapper.SysRoleDeptMapper;
 import com.macro.mall.admin.model.SysRoleDept;
 import com.macro.mall.admin.service.SysRoleDeptService;

@@ -18,13 +18,13 @@
 package com.macro.mall.admin.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.macro.mall.common.domain.CommonResult;
-import com.macro.mall.admin.mapper.SysUserMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.macro.mall.admin.dto.UserDTO;
 import com.macro.mall.admin.dto.UserInfo;
+import com.macro.mall.admin.mapper.SysUserMapper;
 import com.macro.mall.admin.model.SysDeptRelation;
 import com.macro.mall.admin.model.SysUser;
 import com.macro.mall.admin.model.SysUserRole;
@@ -32,17 +32,17 @@ import com.macro.mall.admin.service.SysDeptRelationService;
 import com.macro.mall.admin.service.SysMenuService;
 import com.macro.mall.admin.service.SysUserRoleService;
 import com.macro.mall.admin.service.SysUserService;
-import com.macro.mall.common.constant.CommonConstant;
-import com.macro.mall.common.constant.MqQueueConstant;
-import com.macro.mall.common.constant.SecurityConstants;
-import com.macro.mall.common.template.EnumSmsChannelTemplate;
-import com.macro.mall.common.model.Query;
-import com.macro.mall.common.util.R;
-import com.macro.mall.common.template.MobileMsgTemplate;
 import com.macro.mall.admin.vo.MenuVO;
 import com.macro.mall.admin.vo.SysRole;
 import com.macro.mall.admin.vo.UserVO;
+import com.macro.mall.common.constant.CommonConstant;
+import com.macro.mall.common.constant.MqQueueConstant;
+import com.macro.mall.common.constant.SecurityConstants;
+import com.macro.mall.common.domain.CommonResult;
+import com.macro.mall.common.template.EnumSmsChannelTemplate;
+import com.macro.mall.common.template.MobileMsgTemplate;
 import com.macro.mall.common.util.JwtTokenUtil;
+import com.macro.mall.common.util.SecurityUtils;
 import com.xiaoleilu.hutool.collection.CollectionUtil;
 import com.xiaoleilu.hutool.util.ArrayUtil;
 import com.xiaoleilu.hutool.util.RandomUtil;
@@ -103,6 +103,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public CommonResult login(String username, String password) {
+        //验证码校验
+
         String token = null;
         //密码需要客户端加密后传递
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
@@ -214,15 +216,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return sysUserMapper.selectUserVoByOpenId(openId);
     }
 
+    /**
+     * 分页查询用户信息（含有角色信息）
+     *
+     * @param page    分页对象
+     * @param userDTO 参数列表
+     * @return
+     */
     @Override
-    public Page selectWithRolePage(Query query, UserVO userVO) {
-       /* DataScope dataScope = new DataScope();
-        dataScope.setScopeName("deptId");
-        dataScope.setIsOnly(true);
-        dataScope.setDeptIds(getChildDepts(userVO));*/
-        Object username = query.getCondition().get("username");
-        query.setRecords(sysUserMapper.selectUserVoPageDataScope(query, username));
-        return query;
+    public IPage getUserWithRolePage(Page page, UserDTO userDTO) {
+        return baseMapper.getUserVosPage(page, userDTO);
     }
 
     /**
@@ -259,20 +262,20 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @return true、false
      */
     @Override
-    public R<Boolean> sendSmsCode(String mobile) {
+    public CommonResult sendSmsCode(String mobile) {
         Object tempCode = redisTemplate.opsForValue().get(SecurityConstants.DEFAULT_CODE_KEY + mobile);
         if (tempCode != null) {
             log.error("用户:{}验证码未失效{}", mobile, tempCode);
-            return new R<>(false, "验证码未失效，请失效后再次申请");
+            return new CommonResult().failed(40001, "验证码未失效，请失效后再次申请");
         }
 
         SysUser params = new SysUser();
         params.setPhone(mobile);
-        List<SysUser> userList = this.selectList(new EntityWrapper<>(params));
+        List<SysUser> userList = this.list(Wrappers.query(params));
 
         if (CollectionUtil.isEmpty(userList)) {
             log.error("根据用户手机号{}查询用户为空", mobile);
-            return new R<>(false, "手机号不存在");
+            return new CommonResult().failed(40002, "手机号不存在");
         }
 
         String code = RandomUtil.randomNumbers(4);
@@ -289,7 +292,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                         EnumSmsChannelTemplate.LOGIN_NAME_LOGIN.getTemplate()
                 ));
         redisTemplate.opsForValue().set(SecurityConstants.DEFAULT_CODE_KEY + mobile, code, SecurityConstants.DEFAULT_IMAGE_EXPIRE, TimeUnit.SECONDS);
-        return new R<>(true);
+        return new CommonResult().success(true);
     }
 
     /**
@@ -302,13 +305,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @CacheEvict(value = "user_details", key = "#sysUser.username")
     public Boolean deleteUserById(SysUser sysUser) {
         sysUserRoleService.deleteByUserId(sysUser.getUserId());
-        this.deleteById(sysUser.getUserId());
+        this.removeById(sysUser.getUserId());
         return Boolean.TRUE;
     }
 
     @Override
     @CacheEvict(value = "user_details", key = "#username")
-    public R<Boolean> updateUserInfo(UserDTO userDto, UserVO userVO) {
+    public CommonResult updateUserInfo(UserDTO userDto, UserVO userVO) {
         SysUser sysUser = new SysUser();
         if (StrUtil.isNotBlank(userDto.getPassword())
                 && StrUtil.isNotBlank(userDto.getNewpassword1())) {
@@ -316,13 +319,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 sysUser.setPassword(passwordEncoder.encode(userDto.getNewpassword1()));
             } else {
                 log.warn("原密码错误，修改密码失败:{}", userVO.getUsername());
-                return new R<>(Boolean.FALSE, "原密码错误，修改失败");
+                return new CommonResult().failed(40003, "原密码错误，修改失败");
             }
         }
         sysUser.setPhone(userDto.getPhone());
         sysUser.setUserId(userVO.getUserId());
         sysUser.setAvatar(userDto.getAvatar());
-        return new R<>(this.updateById(sysUser));
+        return new CommonResult().success(this.updateById(sysUser));
     }
 
     @Override
@@ -335,7 +338,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         SysUserRole condition = new SysUserRole();
         condition.setUserId(userDto.getUserId());
-        sysUserRoleService.delete(new EntityWrapper<>(condition));
+        sysUserRoleService.remove(Wrappers.<SysUserRole>update().lambda()
+                .eq(SysUserRole::getUserId, userDto.getUserId()));
         userDto.getRole().forEach(roleId -> {
             SysUserRole userRole = new SysUserRole();
             userRole.setUserId(sysUser.getUserId());
@@ -352,18 +356,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @return 子部门列表
      */
     private List<Integer> getChildDepts(UserVO userVO) {
-        UserVO userVo = findUserByUsername(userVO.getUsername());
-        Integer deptId = userVo.getDeptId();
-
+        Integer deptId = SecurityUtils.getUser().getDeptId();
         //获取当前部门的子部门
-        SysDeptRelation deptRelation = new SysDeptRelation();
-        deptRelation.setAncestor(deptId);
-        List<SysDeptRelation> deptRelationList = sysDeptRelationService.selectList(new EntityWrapper<>(deptRelation));
-        List<Integer> deptIds = new ArrayList<>();
-        for (SysDeptRelation sysDeptRelation : deptRelationList) {
-            deptIds.add(sysDeptRelation.getDescendant());
-        }
-        return deptIds;
+        return sysDeptRelationService
+                .list(Wrappers.<SysDeptRelation>query().lambda()
+                        .eq(SysDeptRelation::getAncestor, deptId))
+                .stream()
+                .map(SysDeptRelation::getDescendant)
+                .collect(Collectors.toList());
     }
 
 }

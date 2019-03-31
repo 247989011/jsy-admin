@@ -18,22 +18,17 @@
 package com.macro.mall.admin.controller;
 
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.admin.model.SysDict;
 import com.macro.mall.admin.service.SysDictService;
-import com.macro.mall.common.constant.CommonConstant;
-import com.macro.mall.common.model.Query;
-import com.macro.mall.common.util.R;
 import com.macro.mall.common.controller.BaseController;
+import com.macro.mall.common.domain.CommonResult;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -59,20 +54,19 @@ public class DictController extends BaseController {
     @GetMapping("/{id}")
     @ResponseBody
     public SysDict dict(@PathVariable Integer id) {
-        return sysDictService.selectById(id);
+        return sysDictService.getById(id);
     }
 
     /**
      * 分页查询字典信息
      *
-     * @param params 分页对象
+     * @param page 分页对象
      * @return 分页对象
      */
     @RequestMapping("/dictPage")
     @ResponseBody
-    public Page dictPage(@RequestParam Map<String, Object> params) {
-        params.put(CommonConstant.DEL_FLAG, CommonConstant.STATUS_NORMAL);
-        return sysDictService.selectPage(new Query<>(params), new EntityWrapper<>());
+    public CommonResult dictPage(Page page, SysDict sysDict) {
+        return new CommonResult().success(sysDictService.page(page, Wrappers.query(sysDict)));
     }
 
     /**
@@ -84,11 +78,10 @@ public class DictController extends BaseController {
     @GetMapping("/type/{type}")
     @Cacheable(value = "dict_details", key = "#type")
     @ResponseBody
-    public List<SysDict> findDictByType(@PathVariable String type) {
-        SysDict condition = new SysDict();
-        condition.setDelFlag(CommonConstant.STATUS_NORMAL);
-        condition.setType(type);
-        return sysDictService.selectList(new EntityWrapper<>(condition));
+    public CommonResult findDictByType(@PathVariable String type) {
+        return new CommonResult().success(sysDictService.list(Wrappers
+                .<SysDict>query().lambda()
+                .eq(SysDict::getType, type)));
     }
 
     /**
@@ -100,8 +93,8 @@ public class DictController extends BaseController {
     @PostMapping
     @CacheEvict(value = "dict_details", key = "#sysDict.type")
     @ResponseBody
-    public R<Boolean> dict(@RequestBody SysDict sysDict) {
-        return new R<>(sysDictService.insert(sysDict));
+    public CommonResult dict(@RequestBody SysDict sysDict) {
+        return new CommonResult().success(sysDictService.save(sysDict));
     }
 
     /**
@@ -114,8 +107,8 @@ public class DictController extends BaseController {
     @DeleteMapping("/{id}/{type}")
     @CacheEvict(value = "dict_details", key = "#type")
     @ResponseBody
-    public R<Boolean> deleteDict(@PathVariable Integer id, @PathVariable String type) {
-        return new R<>(sysDictService.deleteById(id));
+    public CommonResult deleteDict(@PathVariable Integer id, @PathVariable String type) {
+        return new CommonResult().success(sysDictService.removeById(id));
     }
 
     /**
@@ -127,7 +120,7 @@ public class DictController extends BaseController {
     @PutMapping
     @CacheEvict(value = "dict_details", key = "#sysDict.type")
     @ResponseBody
-    public R<Boolean> editDict(@RequestBody SysDict sysDict) {
-        return new R<>(sysDictService.updateById(sysDict));
+    public CommonResult editDict(@RequestBody SysDict sysDict) {
+        return new CommonResult().success(sysDictService.updateById(sysDict));
     }
 }

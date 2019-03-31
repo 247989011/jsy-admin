@@ -18,7 +18,7 @@
 package com.macro.mall.admin.service;
 
 
-import com.baomidou.mybatisplus.service.IService;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.macro.mall.admin.model.SysUserRole;
 
 /**

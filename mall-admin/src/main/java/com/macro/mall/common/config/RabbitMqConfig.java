@@ -23,6 +23,7 @@ public class RabbitMqConfig {
                 .build();
     }
 
+
     /**
      * 订单实际消费队列
      */

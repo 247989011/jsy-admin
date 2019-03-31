@@ -17,23 +17,17 @@
 
 package com.macro.mall.admin.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.macro.mall.common.domain.CommonResult;
 import com.macro.mall.admin.dto.DeptTree;
 import com.macro.mall.admin.model.SysDept;
 import com.macro.mall.admin.service.SysDeptService;
-import com.macro.mall.common.constant.CommonConstant;
 import com.macro.mall.common.controller.BaseController;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import com.macro.mall.common.domain.CommonResult;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * <p>
@@ -43,8 +37,6 @@ import java.util.List;
  * @author lengleng
  * @since 2018-01-20
  */
-//@RestController
-//@RequestMapping("/dept")
 @Api(tags = "后台账户权限-部门管理", description = "部门管理:DeptController",position = 100)
 @Controller
 @RequestMapping("/dept")
@@ -58,13 +50,18 @@ public class DeptController extends BaseController {
      * @param id ID
      * @return SysDept
      */
-    @ApiOperation("通过ID查询")
+    @ApiOperation(value = "通过ID查询",notes = "通过ID查询详情")
+    @ApiImplicitParams({
+            @ApiImplicitParam(value ="123",name = "id",defaultValue = "1",required = true,paramType = "query",dataType = "string"),
+            @ApiImplicitParam(value ="123",name = "id",defaultValue = "1",required = true,paramType = "query",dataType = "string")
+    })
     @ApiResponses({@ApiResponse(code = 201, response = SysDept.class,
             message="状态200的data格式说明：data返回值为对象")})
     @GetMapping("/{id}")
+    //@RequestMapping(value = "",method ={RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public CommonResult get(@PathVariable Integer id) {
-        return  new CommonResult().success(sysDeptService.selectById(id));
+        return  new CommonResult().success(sysDeptService.getById(id));
     }
 
 
@@ -73,16 +70,15 @@ public class DeptController extends BaseController {
      *
      * @return 树形菜单
      */
+    @ApiOperationSort(1)
     @ApiOperation("返回树形菜单集合")
     @ApiResponses({@ApiResponse(code = 201, response = DeptTree.class,
             message="状态200的data格式说明：data返回值为对象")})
     @GetMapping(value = "/tree")
     @ResponseBody
+    @Deprecated
     public CommonResult getTree() {
-        SysDept condition = new SysDept();
-        condition.setDelFlag(CommonConstant.STATUS_NORMAL);
-        List<DeptTree> deptTreeList = sysDeptService.selectListTree(new EntityWrapper<>(condition));
-        return  new CommonResult().success(deptTreeList);
+        return  new CommonResult().success(sysDeptService.listDeptTrees());
     }
 
     /**
@@ -97,7 +93,7 @@ public class DeptController extends BaseController {
     @PostMapping
     @ResponseBody
     public CommonResult add(@RequestBody SysDept  sysDept) {
-        return new CommonResult().success(sysDeptService.insertDept(sysDept));
+        return new CommonResult().success(sysDeptService.saveDept(sysDept));
     }
 
     /**
@@ -112,7 +108,7 @@ public class DeptController extends BaseController {
     @DeleteMapping("/{id}")
     @ResponseBody
     public CommonResult delete(@PathVariable Integer id) {
-        return new CommonResult().success(sysDeptService.deleteDeptById(id));
+        return new CommonResult().success(sysDeptService.removeDeptById(id));
     }
 
     /**

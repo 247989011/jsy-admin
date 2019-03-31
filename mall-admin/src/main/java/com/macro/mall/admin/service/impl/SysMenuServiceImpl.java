@@ -17,14 +17,15 @@
 
 package com.macro.mall.admin.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.macro.mall.admin.mapper.SysMenuMapper;
+import com.macro.mall.admin.mapper.SysRoleMenuMapper;
 import com.macro.mall.admin.model.SysMenu;
+import com.macro.mall.admin.model.SysRoleMenu;
 import com.macro.mall.admin.service.SysMenuService;
-import com.macro.mall.common.constant.CommonConstant;
-import com.macro.mall.common.util.Assert;
 import com.macro.mall.admin.vo.MenuVO;
+import com.xiaoleilu.hutool.collection.CollUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -43,30 +44,30 @@ import java.util.List;
 @Service
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
     @Autowired
-    private SysMenuMapper sysMenuMapper;
+    private SysRoleMenuMapper sysRoleMenuMapper;
 
     @Override
     @Cacheable(value = "menu_details", key = "#role  + '_menu'")
     public List<MenuVO> findMenuByRoleName(String role) {
-        return sysMenuMapper.findMenuByRoleName(role);
+        return baseMapper.findMenuByRoleName(role);
     }
 
     @Override
     @CacheEvict(value = "menu_details", allEntries = true)
     public Boolean deleteMenu(Integer id) {
-        Assert.isNull(id, "菜单ID不能为空");
-        // 删除当前节点
-        SysMenu condition1 = new SysMenu();
-        condition1.setMenuId(id);
-        condition1.setDelFlag(CommonConstant.STATUS_DEL);
-        this.updateById(condition1);
+        // 查询父节点为当前节点的节点
+        List<SysMenu> menuList = this.list(Wrappers.<SysMenu>query()
+                .lambda().eq(SysMenu::getParentId, id));
+        if (CollUtil.isNotEmpty(menuList)) {
+            return false;
+        }
 
-        // 删除父节点为当前节点的节点
-        SysMenu conditon2 = new SysMenu();
-        conditon2.setParentId(id);
-        SysMenu sysMenu = new SysMenu();
-        sysMenu.setDelFlag(CommonConstant.STATUS_DEL);
-        return this.update(sysMenu, new EntityWrapper<>(conditon2));
+        sysRoleMenuMapper
+                .delete(Wrappers.<SysRoleMenu>query()
+                        .lambda().eq(SysRoleMenu::getMenuId, id));
+
+        //删除当前菜单及其子菜单
+        return this.removeById(id);
     }
 
     @Override

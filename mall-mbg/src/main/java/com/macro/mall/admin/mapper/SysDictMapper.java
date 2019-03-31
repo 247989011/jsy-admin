@@ -17,7 +17,7 @@
 
 package com.macro.mall.admin.mapper;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.admin.model.SysDict;
 
 /**

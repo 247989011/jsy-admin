@@ -1,14 +1,9 @@
 package com.macro.mall.common.domain;
 
-import com.github.pagehelper.PageInfo;
 import com.macro.mall.common.util.JsonUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.BindingResult;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 通用返回对象
@@ -83,22 +78,6 @@ public class CommonResult {
         return this;
     }
 
-    /**
-     * 返回分页成功数据
-     */
-    public CommonResult pageSuccess(List data) {
-        PageInfo pageInfo = new PageInfo(data);
-        Map<String, Object> result = new HashMap<>();
-        result.put("pageSize", pageInfo.getPageSize());
-        result.put("totalPage", pageInfo.getPages());
-        result.put("total", pageInfo.getTotal());
-        result.put("pageNum", pageInfo.getPageNum());
-        result.put("list", pageInfo.getList());
-        this.code = SUCCESS;
-        this.message = "操作成功";
-        this.data = result;
-        return this;
-    }
 
     /**
      * 普通失败提示信息

@@ -42,16 +42,6 @@
 		<result column="name" property="deptName"/>
 	</resultMap>
 
-	<select id="selectRolePage" resultMap="RoleDtoMap">
-		SELECT
-			*
-		FROM
-			sys_role r
-		LEFT JOIN sys_role_dept rd ON rd.role_id = r.role_id
-		LEFT JOIN sys_dept d ON rd.dept_id = d.dept_id
-		WHERE r.del_flag = 0
-		ORDER BY r.role_id ASC
-	</select>
 	<select id="selectListByDeptId" resultMap="BaseResultMap">
 		SELECT
 			r.role_id,

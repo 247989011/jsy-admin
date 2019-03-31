@@ -17,7 +17,7 @@
 
 package com.macro.mall.admin.service.impl;
 
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.macro.mall.admin.mapper.SysDictMapper;
 import com.macro.mall.admin.model.SysDict;
 import com.macro.mall.admin.service.SysDictService;

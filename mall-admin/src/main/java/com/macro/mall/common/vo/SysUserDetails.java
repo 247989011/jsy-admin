@@ -1,6 +1,6 @@
 package com.macro.mall.common.vo;
 
-import com.baomidou.mybatisplus.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.macro.mall.admin.model.SysUser;
 import com.macro.mall.admin.vo.MenuVO;
 import org.springframework.security.core.GrantedAuthority;

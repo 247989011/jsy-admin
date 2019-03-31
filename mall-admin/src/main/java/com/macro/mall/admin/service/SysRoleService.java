@@ -17,12 +17,9 @@
 
 package com.macro.mall.admin.service;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.IService;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.macro.mall.admin.dto.RoleDTO;
 import com.macro.mall.admin.model.SysRole;
-import com.macro.mall.common.model.Query;
 
 import java.util.List;
 
@@ -44,14 +41,6 @@ public interface SysRoleService extends IService<SysRole> {
      */
     Boolean insertRole(RoleDTO roleDto);
 
-    /**
-     * 分页查角色列表
-     *
-     * @param objectQuery         查询条件
-     * @param objectEntityWrapper wapper
-     * @return page
-     */
-    Page selectwithDeptPage(Query<Object> objectQuery, EntityWrapper<Object> objectEntityWrapper);
 
     /**
      * 更新角色

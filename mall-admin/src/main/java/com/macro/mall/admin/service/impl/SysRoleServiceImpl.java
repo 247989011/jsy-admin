@@ -17,16 +17,14 @@
 
 package com.macro.mall.admin.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.macro.mall.admin.dto.RoleDTO;
 import com.macro.mall.admin.mapper.SysRoleDeptMapper;
 import com.macro.mall.admin.mapper.SysRoleMapper;
-import com.macro.mall.admin.dto.RoleDTO;
 import com.macro.mall.admin.model.SysRole;
 import com.macro.mall.admin.model.SysRoleDept;
 import com.macro.mall.admin.service.SysRoleService;
-import com.macro.mall.common.model.Query;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,8 +44,6 @@ import java.util.List;
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
     @Autowired
     private SysRoleDeptMapper sysRoleDeptMapper;
-    @Autowired
-    private SysRoleMapper sysRoleMapper;
 
     /**
      * 添加角色
@@ -59,7 +55,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public Boolean insertRole(RoleDTO roleDto) {
         SysRole sysRole = new SysRole();
         BeanUtils.copyProperties(roleDto, sysRole);
-        sysRoleMapper.insert(sysRole);
+        baseMapper.insert(sysRole);
         SysRoleDept roleDept = new SysRoleDept();
         roleDept.setRoleId(sysRole.getRoleId());
         roleDept.setDeptId(roleDto.getRoleDeptId());
@@ -67,18 +63,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         return true;
     }
 
-    /**
-     * 分页查角色列表
-     *
-     * @param query   查询条件
-     * @param wrapper wapper
-     * @return page
-     */
-    @Override
-    public Page selectwithDeptPage(Query<Object> query, EntityWrapper<Object> wrapper) {
-        query.setRecords(sysRoleMapper.selectRolePage(query, query.getCondition()));
-        return query;
-    }
 
     /**
      * 更新角色
@@ -92,12 +76,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         //删除原有的角色部门关系
         SysRoleDept condition = new SysRoleDept();
         condition.setRoleId(roleDto.getRoleId());
-        sysRoleDeptMapper.delete(new EntityWrapper<>(condition));
+        sysRoleDeptMapper.delete(Wrappers.query(condition));
 
         //更新角色信息
         SysRole sysRole = new SysRole();
         BeanUtils.copyProperties(roleDto, sysRole);
-        sysRoleMapper.updateById(sysRole);
+        baseMapper.updateById(sysRole);
 
         //维护角色部门关系
         SysRoleDept roleDept = new SysRoleDept();
@@ -115,6 +99,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
      */
     @Override
     public List<SysRole> selectListByDeptId(Integer deptId) {
-        return sysRoleMapper.selectListByDeptId(deptId);
+        return baseMapper.selectListByDeptId(deptId);
     }
 }

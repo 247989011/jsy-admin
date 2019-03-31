@@ -17,8 +17,8 @@
 
 package com.macro.mall.admin.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.macro.mall.admin.mapper.SysRoleMenuMapper;
 import com.macro.mall.admin.model.SysRoleMenu;
 import com.macro.mall.admin.service.SysRoleMenuService;
@@ -45,7 +45,7 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
     public Boolean insertRoleMenus(String role, Integer roleId,String menuIds) {
         SysRoleMenu condition = new SysRoleMenu();
         condition.setRoleId(roleId);
-        this.delete(new EntityWrapper<>(condition));
+        this.remove(Wrappers.query(condition));
 
         if (StrUtil.isBlank(menuIds)){
             return Boolean.TRUE;
@@ -64,6 +64,6 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
             roleMenu.setMenuId(Integer.valueOf(menuId));
             roleMenuList.add(roleMenu);
         }
-        return this.insertBatch(roleMenuList);
+        return this.saveBatch(roleMenuList);
     }
 }

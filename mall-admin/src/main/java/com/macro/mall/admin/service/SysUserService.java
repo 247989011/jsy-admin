@@ -17,15 +17,14 @@
 
 package com.macro.mall.admin.service;
 
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.IService;
-import com.macro.mall.common.domain.CommonResult;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.macro.mall.admin.dto.UserDTO;
 import com.macro.mall.admin.dto.UserInfo;
 import com.macro.mall.admin.model.SysUser;
-import com.macro.mall.common.model.Query;
-import com.macro.mall.common.util.R;
 import com.macro.mall.admin.vo.UserVO;
+import com.macro.mall.common.domain.CommonResult;
 
 import java.util.List;
 
@@ -51,11 +50,11 @@ public interface SysUserService extends IService<SysUser> {
     /**
      * 分页查询用户信息（含有角色信息）
      *
-     * @param query 查询条件
-     * @param userVO
+     * @param page    分页对象
+     * @param userDTO 参数列表
      * @return
      */
-    Page selectWithRolePage(Query query, UserVO userVO);
+    IPage getUserWithRolePage(Page page, UserDTO userDTO);
 
     /**
      * 查询用户信息
@@ -84,7 +83,7 @@ public interface SysUserService extends IService<SysUser> {
      * @param username 用户名
      * @return Boolean
      */
-    R<Boolean> updateUserInfo(UserDTO userDto, UserVO username);
+    CommonResult updateUserInfo(UserDTO userDto, UserVO username);
 
     /**
      * 更新指定用户信息
@@ -105,7 +104,7 @@ public interface SysUserService extends IService<SysUser> {
      * @param mobile 手机号
      * @return R
      */
-    R<Boolean> sendSmsCode(String mobile);
+    CommonResult sendSmsCode(String mobile);
 
     /**
      * 通过openId查询用户

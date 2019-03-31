@@ -1,17 +1,17 @@
 package com.macro.mall.admin.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.macro.mall.common.domain.CommonResult;
-import com.macro.mall.common.util.TreeUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.api.R;
 import com.macro.mall.admin.dto.MenuTree;
 import com.macro.mall.admin.model.SysMenu;
 import com.macro.mall.admin.service.SysMenuService;
 import com.macro.mall.admin.service.SysUserService;
-import com.macro.mall.common.constant.CommonConstant;
-import com.macro.mall.common.util.R;
 import com.macro.mall.admin.vo.MenuVO;
 import com.macro.mall.admin.vo.UserVO;
+import com.macro.mall.common.constant.CommonConstant;
 import com.macro.mall.common.controller.BaseController;
+import com.macro.mall.common.domain.CommonResult;
+import com.macro.mall.common.util.TreeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -93,7 +93,7 @@ public class MenuController extends BaseController {
     public CommonResult getTree() {
         SysMenu condition = new SysMenu();
         condition.setDelFlag(CommonConstant.STATUS_NORMAL);
-        return  new CommonResult().success(TreeUtil.bulidTree(sysMenuService.selectList(new EntityWrapper<>(condition)), -1));
+        return  new CommonResult().success(TreeUtil.bulidTree(sysMenuService.list(Wrappers.emptyWrapper()), -1));
     }
 
     /**
@@ -128,7 +128,7 @@ public class MenuController extends BaseController {
     @GetMapping("/{id}")
     @ResponseBody
     public CommonResult menu(@PathVariable Integer id) {
-        return new CommonResult().success(sysMenuService.selectById(id));
+        return new CommonResult().success(sysMenuService.getById(id));
     }
 
     /**
@@ -143,7 +143,7 @@ public class MenuController extends BaseController {
     @PostMapping
     @ResponseBody
     public CommonResult menu(@RequestBody SysMenu sysMenu) {
-        return  new CommonResult().success(new R<>(sysMenuService.insert(sysMenu)));
+        return  new CommonResult().success(sysMenuService.save(sysMenu));
     }
 
     /**
@@ -159,7 +159,7 @@ public class MenuController extends BaseController {
     @DeleteMapping("/{id}")
     @ResponseBody
     public CommonResult menuDel(@PathVariable Integer id) {
-        return  new CommonResult().success(new R<>(sysMenuService.deleteMenu(id)));
+        return  new CommonResult().success(sysMenuService.deleteMenu(id));
     }
 
     @ApiOperation("更新菜单")
@@ -168,6 +168,6 @@ public class MenuController extends BaseController {
     @PutMapping
     @ResponseBody
     public CommonResult menuUpdate(@RequestBody SysMenu sysMenu) {
-        return new CommonResult().success(new R<>(sysMenuService.updateMenuById(sysMenu)));
+        return new CommonResult().success(sysMenuService.updateMenuById(sysMenu));
     }
 }
