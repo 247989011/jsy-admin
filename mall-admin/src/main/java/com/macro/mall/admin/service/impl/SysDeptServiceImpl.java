@@ -27,7 +27,7 @@ import com.macro.mall.admin.service.SysDeptRelationService;
 import com.macro.mall.admin.service.SysDeptService;
 import com.macro.mall.common.util.SecurityUtils;
 import com.macro.mall.common.util.TreeUtil;
-import com.xiaoleilu.hutool.collection.CollUtil;
+import cn.hutool.core.collection.CollUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

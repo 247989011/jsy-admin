@@ -18,6 +18,7 @@
 package com.macro.mall.admin.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author lengleng
@@ -25,6 +26,7 @@ import lombok.Data;
  * 部门树
  */
 @Data
+@EqualsAndHashCode(callSuper=true)
 public class DeptTree extends TreeNode {
     private String name;
 }

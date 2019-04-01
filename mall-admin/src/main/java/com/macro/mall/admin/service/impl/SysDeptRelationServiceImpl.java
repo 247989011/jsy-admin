@@ -23,7 +23,7 @@ import com.macro.mall.admin.mapper.SysDeptRelationMapper;
 import com.macro.mall.admin.model.SysDept;
 import com.macro.mall.admin.model.SysDeptRelation;
 import com.macro.mall.admin.service.SysDeptRelationService;
-import com.xiaoleilu.hutool.collection.CollUtil;
+import cn.hutool.core.collection.CollUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
@@ -35,6 +36,7 @@ import java.io.Serializable;
  * @since 2018-01-20
  */
 @Data
+@EqualsAndHashCode(callSuper=false)
 @TableName("sys_role_dept")
 public class SysRoleDept extends Model<SysRoleDept> {
 

@@ -1,28 +1,35 @@
 package com.macro.mall.demo.model;
 
-import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
+/**
+ *
+ *
+ * @author auto code generator
+ * @date 2019-04-01 12:12:43
+ */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @TableName("test_demo")
-@ApiModel("testDemo")
 public class TestDemo extends Model<TestDemo> {
+private static final long serialVersionUID = 1L;
 
-    @TableField("id")
-    @ApiModelProperty("id")
+    /**
+   *
+   */
+    @TableId
     private Integer id;
-    @TableField("name")
+    /**
+   *
+   */
     private String name;
-    @TableField("phone")
+    /**
+   *
+   */
     private String phone;
 
-
-    protected Serializable pkVal() {
-        return this.id;
-    }
 }

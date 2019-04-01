@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -36,6 +37,7 @@ import java.util.Date;
  * @since 2018-01-22
  */
 @Data
+@EqualsAndHashCode(callSuper=false)
 @TableName("sys_dept")
 public class SysDept extends Model<SysDept> {
 

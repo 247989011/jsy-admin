@@ -136,13 +136,10 @@
         `user`.salt,
         `user`.phone,
         `user`.avatar,
-        `user`.wx_openid,
-        `user`.qq_openid,
         `user`.dept_id,
         `user`.create_time AS ucreate_time,
         `user`.update_time AS uupdate_time,
         `user`.del_flag AS udel_flag,
-        `user`.lock_flag AS lock_flag,
         `user`.dept_id AS deptId,
         d.name AS deptName
         FROM

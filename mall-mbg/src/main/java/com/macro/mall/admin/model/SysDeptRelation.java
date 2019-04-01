@@ -17,9 +17,9 @@
 
 package com.macro.mall.admin.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
@@ -32,7 +32,7 @@ import java.io.Serializable;
  * @since 2018-01-22
  */
 @Data
-@TableName("sys_dept_relation")
+@EqualsAndHashCode(callSuper=true)
 public class SysDeptRelation extends Model<SysDeptRelation> {
 
     private static final long serialVersionUID = 1L;

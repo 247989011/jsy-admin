@@ -19,6 +19,7 @@ package com.macro.mall.admin.dto;
 
 import com.macro.mall.admin.model.SysRole;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author lengleng
@@ -26,6 +27,7 @@ import lombok.Data;
  * 角色Dto
  */
 @Data
+@EqualsAndHashCode(callSuper=true)
 public class RoleDTO extends SysRole {
     /**
      * 角色部门Id

@@ -22,7 +22,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.macro.mall.admin.mapper.SysRoleMenuMapper;
 import com.macro.mall.admin.model.SysRoleMenu;
 import com.macro.mall.admin.service.SysRoleMenuService;
-import com.xiaoleilu.hutool.util.StrUtil;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 

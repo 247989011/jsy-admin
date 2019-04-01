@@ -25,7 +25,7 @@ import com.macro.mall.admin.model.SysMenu;
 import com.macro.mall.admin.model.SysRoleMenu;
 import com.macro.mall.admin.service.SysMenuService;
 import com.macro.mall.admin.vo.MenuVO;
-import com.xiaoleilu.hutool.collection.CollUtil;
+import cn.hutool.core.collection.CollUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

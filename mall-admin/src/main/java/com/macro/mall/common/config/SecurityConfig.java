@@ -111,7 +111,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         LoginAuthenticationProvider loginAuthenticationProvider = new LoginAuthenticationProvider(userDetailsService(), passwordEncoder());
         return loginAuthenticationProvider;
     }
-
+    @Bean
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
         ProviderManager authenticationManager = new ProviderManager(

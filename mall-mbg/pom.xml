@@ -12,6 +12,10 @@
     <name>mall-mbg</name>
     <description>mall-mbg project for mall</description>
 
+    <properties>
+        <velocity.version>1.7</velocity.version>
+    </properties>
+
     <dependencies>
         <!-- MyBatis 生成器 -->
         <dependency>
@@ -26,16 +30,22 @@
             <version>3.4.2</version>
         </dependency>
 
-       <!-- <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-support</artifactId>
-            <version>2.1.9</version>
-        </dependency>-->
         <!-- mybatis-plus start -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <!--代码生成模板引擎-->
+        <dependency>
+            <artifactId>velocity</artifactId>
+            <groupId>org.apache.velocity</groupId>
+            <version>${velocity.version}</version>
         </dependency>
         <!--Mysql数据库驱动-->
         <dependency>
@@ -65,6 +75,17 @@
             <artifactId>lombok</artifactId>
             <version>1.16.22</version>
             <optional>true</optional>
+        </dependency>
+        <!--hutool-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>1.8</version>
         </dependency>
     </dependencies>
 

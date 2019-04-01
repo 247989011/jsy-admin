@@ -1,59 +1,80 @@
-/*
- *    Copyright (c) 2018-2025, lengleng All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: lengleng (wangiegie@gmail.com)
- */
-
 package com.macro.mall.demo.controller;
 
-import com.macro.mall.common.controller.BaseController;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.common.domain.CommonResult;
+import com.macro.mall.demo.model.TestDemo;
 import com.macro.mall.demo.service.TestDemoService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+
 
 /**
- * <p>
- * 部门管理 前端控制器
- * </p>
+ * 
  *
- * @author lengleng
- * @since 2018-01-20
+ * @author auto code generator
+ * @date 2019-04-01 12:12:43
  */
-@Api(tags = "testDemo", description = "testDemo描述",position = 100)
 @RestController
-@RequestMapping("/test/demo")
-public class TestDemoController extends BaseController {
-    @Autowired
-    private TestDemoService testDemoService;
+@AllArgsConstructor
+@RequestMapping("/testdemo")
+public class TestDemoController {
 
-    /**
-     * 通过ID查询
-     *
-     * @param id ID
-     * @return SysDept
-     */
-    @ApiOperation(value = "通过ID查询",notes = "通过ID查询详情")
-    @GetMapping("/{id}/{name}")
-    @ResponseBody
-    public CommonResult get(@PathVariable Integer id,@PathVariable String name) {
+  private final  TestDemoService testDemoService;
 
-        return  new CommonResult().success(
-                testDemoService.getById(id));
-    }
+  /**
+   * 简单分页查询
+   * @param page 分页对象
+   * @param testDemo 
+   * @return
+   */
+  @GetMapping("/page")
+  public CommonResult getTestDemoPage(Page<TestDemo> page, TestDemo testDemo) {
+    return  new CommonResult().success(testDemoService.getTestDemoPage(page,testDemo));
+  }
 
+
+  /**
+   * 通过id查询单条记录
+   * @param id
+   * @return R
+   */
+  @GetMapping("/{id}")
+  public CommonResult getById(@PathVariable("id") Integer id){
+    return new CommonResult().success(testDemoService.getById(id));
+  }
+
+  /**
+   * 新增记录
+   * @param testDemo
+   * @return R
+   */
+  @PostMapping
+  @PreAuthorize("hasAnyAuthority('demo_testdemo_add')")
+  public CommonResult save(@RequestBody TestDemo testDemo){
+    return new CommonResult().success(testDemoService.save(testDemo));
+  }
+
+  /**
+   * 修改记录
+   * @param testDemo
+   * @return R
+   */
+  @PutMapping
+  @PreAuthorize("hasAnyAuthority('demo_testdemo_edit')")
+  public CommonResult update(@RequestBody TestDemo testDemo){
+    return new CommonResult().success(testDemoService.updateById(testDemo));
+  }
+
+  /**
+   * 通过id删除一条记录
+   * @param id
+   * @return R
+   */
+  @DeleteMapping("/{id}")
+  @PreAuthorize("hasAnyAuthority('demo_testdemo_del')")
+  public CommonResult removeById(@PathVariable Integer id){
+    return new CommonResult().success(testDemoService.removeById(id));
+  }
 
 }

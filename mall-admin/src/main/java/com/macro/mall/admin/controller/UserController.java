@@ -1,5 +1,6 @@
 package com.macro.mall.admin.controller;
 
+import cn.hutool.core.io.FileUtil;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.luhuiguo.fastdfs.domain.StorePath;
@@ -15,13 +16,11 @@ import com.macro.mall.admin.vo.UserVO;
 import com.macro.mall.common.constant.CommonConstant;
 import com.macro.mall.common.controller.BaseController;
 import com.macro.mall.common.domain.CommonResult;
-import com.xiaoleilu.hutool.io.FileUtil;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -103,7 +102,7 @@ public class UserController extends BaseController {
             message="状态200的data格式说明：data返回值为对象")})
     @GetMapping("/info")
     @ResponseBody
-    @PreAuthorize("hasAnyAuthority('info')")
+    //@PreAuthorize("hasAnyAuthority('info')")
     public CommonResult user(Principal principal) {
         String  username = principal.getName();
         UserInfo userInfo = userService.findUserInfo(username);

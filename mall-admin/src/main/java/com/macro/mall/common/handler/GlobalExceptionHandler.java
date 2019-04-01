@@ -24,10 +24,10 @@ package com.macro.mall.common.handler;
 
 import com.macro.mall.common.domain.CommonResult;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
@@ -38,7 +38,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @Slf4j
 @RestControllerAdvice
+@ResponseBody
+@Order(1)
 public class GlobalExceptionHandler {
+
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public CommonResult accessDeniedException(AccessDeniedException e) {
+        log.info("保存全局异常信息 ex={}", e.getMessage(), e);
+        return new CommonResult().failed(477,"当前操作没有权限");
+    }
+
+
+
     /**
      * 全局异常.
      *
@@ -46,8 +58,6 @@ public class GlobalExceptionHandler {
      * @return R
      */
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ResponseBody
     public CommonResult exception(Exception e) {
         log.info("保存全局异常信息 ex={}", e.getMessage(), e);
         return new CommonResult().failed(5001,e.getMessage());

@@ -19,12 +19,14 @@ package com.macro.mall.admin.dto;
 
 import com.macro.mall.admin.vo.MenuVO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author lengleng
  * @date 2017年11月9日23:33:27
  */
 @Data
+@EqualsAndHashCode(callSuper=true)
 public class MenuTree extends TreeNode {
     private String icon;
     private String name;
