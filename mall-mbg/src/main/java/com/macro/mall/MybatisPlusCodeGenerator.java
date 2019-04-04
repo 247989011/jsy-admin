@@ -296,7 +296,7 @@ public class MybatisPlusCodeGenerator {
             return getConfig().getString("backProjectPath") + File.separator +
                     getConfig().getString("model.moduleName") + File.separator +
                     "src" + File.separator + "main" + File.separator + "resources" + File.separator +
-                    packageName.replace(".", File.separator) + moduleName +File.separator +
+                    packageName.replace(".", File.separator)+ File.separator + moduleName +File.separator +
                     "mapper" + File.separator + className + "Mapper.xml";
         }
 
