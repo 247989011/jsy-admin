@@ -1,3 +1,6 @@
+# 说明
+  本项目是基于[mall](https://github.com/macrozheng/mall) 和[pig](https://gitee.com/log4j/pig) 糅合成的衍生品，作为日常开发的脚手架。
+
 # mall
 
 ## 说明
