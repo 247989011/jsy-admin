@@ -3,7 +3,7 @@ package ${package}.${moduleName}.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.macro.mall.demo.mapper.${className}Mapper
+import com.macro.mall.demo.mapper.${className}Mapper;
 import ${package}.${moduleName}.model.${className};
 import ${package}.${moduleName}.service.${className}Service;
 import org.springframework.stereotype.Service;
