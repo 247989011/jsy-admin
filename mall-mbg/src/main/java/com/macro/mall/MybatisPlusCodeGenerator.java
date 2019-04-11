@@ -10,6 +10,7 @@ import com.macro.mall.generator.entity.ColumnEntity;
 import com.macro.mall.generator.entity.GenConfig;
 import com.macro.mall.generator.entity.TableEntity;
 import lombok.Cleanup;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -26,39 +27,59 @@ import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
-
+@Slf4j
 public class MybatisPlusCodeGenerator {
+
+    private static final List<Map<String, Object>> logMapList = new ArrayList<>();
 
 
     public static void main(String[] args) {
         //配置信息
         Configuration config = getConfig();
-        String tableNames = config.getString("tableNames");
-        String[] tableNameArr = tableNames.split(";");
-        for (String tableName : tableNameArr) {
-            generatorOneTableCode(tableName, config);
+        Connection connection = null;
+        try {
+
+            DataSourceConfig dsc = new DataSourceConfig();
+            dsc.setUrl(config.getString("jdbc.url"));
+            dsc.setDriverName(config.getString("jdbc.driver-class-name"));
+            dsc.setUsername(config.getString("jdbc.username"));
+            dsc.setPassword(config.getString("jdbc.password"));
+            connection = dsc.getConn();
+
+            String tableNames = config.getString("tableNames");
+            String[] tableNameArr = tableNames.split(";");
+            for (String tableName : tableNameArr) {
+                if (StringUtils.isBlank(tableName)) {
+                    continue;
+                }
+                addToLogList("表'{}'开始代码生成··· ",tableName);
+                generatorOneTableCode(connection,tableName, config);
+                addToLogList("表'{}'代码生成完毕!!! ",tableName);
+            }
+            print();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-
-
     }
 
 
 
-    private static void generatorOneTableCode(String tableName,Configuration config) {
-        DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl(config.getString("jdbc.connectionURL"));
-        dsc.setDriverName(config.getString("jdbc.driverClass"));
-        dsc.setUsername(config.getString("jdbc.userId"));
-        dsc.setPassword(config.getString("jdbc.password"));
-
-        Connection connection = dsc.getConn();
+    private static void generatorOneTableCode(Connection connection, String tableName,Configuration config) {
         //查询表信息
         Map<String, String> table = new HashMap<String, String>();
         //查询列信息
         List<Map<String, String>> columns =new ArrayList<Map<String, String>>();
-
         PreparedStatement ps;
         try {
             ps = connection.prepareStatement(
@@ -214,9 +235,13 @@ public class MybatisPlusCodeGenerator {
             try {
                 File file = new File(
                         getFileName(template, className, map.get("package").toString(), map.get("moduleName").toString()));
+                if (file.exists()) {
+                    addToLogList("文件'{}'被覆盖重写··· ",file.getPath());
+                }else{
+                    addToLogList("文件'{}'生成成功··· ",file.getPath());
+                }
+
                 FileUtil.touch(file);
-
-
                 @Cleanup FileOutputStream fos = new FileOutputStream(file);
                 //添加到zip
                 IoUtil.write(fos, CharsetUtil.UTF_8, false, sw.toString());
@@ -352,5 +377,27 @@ public class MybatisPlusCodeGenerator {
         templates.add("template/api.js.vm");
         templates.add("template/crud.js.vm");
         return templates;
+    }
+
+    public static void addToLogList(String msg, Object... param) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("msg", msg);
+        map.put("param", param);
+        logMapList.add(map);
+    }
+
+    public static void print() {
+        log.info("########################################################################################");
+        log.info("###################################### 输出代码生成结果 ###################################");
+        log.info("######################################↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓###################################");
+        for (Map<String, Object> map : logMapList) {
+            String msg = map.get("msg").toString();
+            Object[] params = (Object[]) map.get("param");
+            log.info(msg,params);
+        }
+        log.info("↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑");
+        log.info("↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑");
+        log.info("###################################### 输出代码生成结果 ###################################");
+        log.info("########################################################################################");
     }
 }
