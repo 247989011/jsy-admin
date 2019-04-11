@@ -36,7 +36,7 @@ public class MybatisPlusCodeGenerator {
         //配置信息
         Configuration config = getConfig();
         String tableNames = config.getString("tableNames");
-        String[] tableNameArr = tableNames.split(",");
+        String[] tableNameArr = tableNames.split(";");
         for (String tableName : tableNameArr) {
             generatorOneTableCode(tableName, config);
         }
